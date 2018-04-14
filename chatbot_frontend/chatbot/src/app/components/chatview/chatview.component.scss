@@ -1,6 +1,7 @@
 $bg: linear-gradient(-15deg, #F3A847, #FF7700);
 $bghover: linear-gradient(-15deg, #e2A736, #dd6600);
 $basebg:#f2f2f2;
+$fontColor: #323232;
 
 .chatbot-wrapper {
     background: rgba(253,139,38,1);
@@ -19,6 +20,7 @@ $basebg:#f2f2f2;
     display: flex;
     align-items: center;
     justify-items: center;
+    padding: 5rem 0;
 }
 
 .chat {
@@ -26,60 +28,81 @@ $basebg:#f2f2f2;
     margin-left: auto;
     margin-right: auto;
     font-size: 10px;
-    border-radius: 1rem;
-    width: 50rem;
+    border-radius: 4px;
+    min-width: 60rem;
+    width: 40vw;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0px 4px 6px -1px rgba(0,0,0, 0.4);
     &__header {
-        height: 3rem;
+        
     }
     &__footer {
-        height: 7.5rem;
+        border-top: 1px solid #989898;
+        padding: 1rem 3rem;
+        flex-shrink: 0;
+        form {
+            display: flex;
+        }
     }
     &__body {
-        height: 43rem;
+        padding: 3rem;
+        flex-grow: 1;
     }
 }
 
 .chat-message {
+    width: 100%;
+    float: left;
+    margin-top: 3rem;
+    &:first-child {
+        margin-top: 0;
+    }
     &__avatar {
         background-color: #fff;
         border-radius: 50%;
         float: left;
         width: 5rem;
-        padding: 0.5rem;
-        margin: 0.5rem;
-        margin-left: 2rem;
-        height: 4rem;
+        height: 5rem;
+        margin-top: 0.5rem;
+        border: 2px solid #323232;
     }
     &__avatar--other {
         float: right;
-        margin-right: 2rem;
         &::after {
             clear: both;
         }
     }
     &__text {
-        color: $basebg;
+        position: relative;
+        color: $fontColor;
         text-align: center;
-        font-size: 1.2rem;
+        font-size: 1.6rem;
         background-color: #fff;
-        background: $bg;
-        border-radius: 1rem;
+        border-top: 2px solid #fd8b26;
+        border-radius: 4px;
         float: left;
-        width: 35rem;
+        width: calc(70% - 7rem);
         padding: 0.5rem;
-        margin: 0.5rem;
-        margin-left: 3rem;
-        height: 4rem;
-        z-index: 999;
+        min-height: 6rem;
+        margin-left: 2rem;
         &--pointer {
             height: 1.5rem;
             width: 1.5rem;
-            background-color: #FF7700;
+            background-color: #fff;
+            -webkit-transform: rotate(45deg);
+            transform: translate3d(50%, -50%, 0) rotate(45deg);
             position: absolute;
-            margin-left: -1.1rem;
-            margin-top: 1rem;
-            transform: rotate(45deg);
+            left: auto;
+            right: 100%;
+            top: 50%;
+        }
+        &--other--pointer {
+            left: auto;
+            right: 100%;
+            left: 100%;
+            transform: translate3d(-50%, -50%, 0) rotate(45deg);
         }
         &--text {
             height: 4rem;
@@ -91,13 +114,9 @@ $basebg:#f2f2f2;
         }
     }
     &__text--other {
-        margin-right: 1rem;
+        margin-left: 0;
+        margin-right: 2rem;
         float: right;
-        z-index: 999;
-        &--pointer {
-            background-color: #f69d37;
-            margin-left: 34.7rem;
-        }
     }
 }
 
@@ -106,35 +125,33 @@ $basebg:#f2f2f2;
     border: none;
     border-top-left-radius: 1rem;
     border-bottom-left-radius: 1rem;
-    height: 1.5rem;
-    width: 33rem;
-    padding: 2rem;
-    margin: 1rem;
-    outline: none;
-    font-size: 1rem;
-    float: left;
-    color: #555;
+    color: $fontColor;
     text-align: left;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
+    padding: 1.5rem 2rem;
+    line-height: 2rem;
+    flex-grow: 1;
+    min-height: 5rem;
+    height: 5rem;
 }
 
 .btn {
-    float: right;
     font-weight: 500;
-    background: $bg;
-    font-size: 1.5rem;
-    color: $basebg;
+    background: linear-gradient(45deg, #fd8b26, #fbc276);
+    font-size: 1.6rem;
+    color: #323232;
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
     border: none;
-    margin: 1rem;
-    height: 5.5rem;
-    width: 10rem;
-    margin-left: 0rem;
-    &::after {
-        clear: both;
-    }
-    &:hover {
-        background: $bghover;
-    }
+    margin: 0;
+    line-height: 2rem;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    flex-grow: 0;
+    height: 5rem;
+    margin-left: 1rem;
+    // &:hover {
+    //     background: $bghover;
+    // }
 }

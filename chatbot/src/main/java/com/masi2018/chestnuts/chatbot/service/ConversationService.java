@@ -1,5 +1,7 @@
 package com.masi2018.chestnuts.chatbot.service;
 
+import am.ik.aws.apa.jaxws.ItemSearchRequest;
+import am.ik.aws.apa.jaxws.ItemSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -26,8 +28,8 @@ public class ConversationService {
         return watsonConnector.sendToWatson(message);
     }
 
-    public String prepareForAmazon(String message) {
-        String query = queryBuilder.buildQuery(message);
+    public ItemSearchResponse prepareForAmazon(String message) {
+        ItemSearchRequest query = queryBuilder.buildQuery(message);
         return amazonConnector.sendToAmazon(query);
     }
 

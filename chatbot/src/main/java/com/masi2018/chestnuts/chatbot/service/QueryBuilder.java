@@ -1,12 +1,12 @@
 package com.masi2018.chestnuts.chatbot.service;
 
+import am.ik.aws.apa.jaxws.ItemSearchRequest;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Service
 public class QueryBuilder {
 
-    public String buildQuery(String message) {
-        throw new NotImplementedException();
+    public ItemSearchRequest buildQuery(String message) {
+        return new ItemSearchRequest();
     }
 }

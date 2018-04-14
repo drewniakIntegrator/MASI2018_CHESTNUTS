@@ -1,1 +1,78 @@
-/* You can add global styles to this file, and also import other style files */
+@import './app/styles/_base.scss';
+@import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Raleway:200,200i,300,300i,400,400i,600,700,800,900&subset=latin-ext');
+
+$uh: 1700px;
+$hd: 1450px;
+$lg: 1100px;
+$md: 991px;
+$sm: 600px;
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+ul>li {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 10px;
+}
+
+.minheight {
+    min-height: 1px;
+}
+
+@media screen and (max-width: $uh) {
+    html {
+        font-size: 9.5px;
+    }
+}
+
+@media screen and (max-width: $hd) {
+    html {
+        font-size: 9px;
+    }
+}
+
+@media screen and (max-width: $lg) {
+    html {
+        font-size: 8px;
+    }
+}
+
+@media screen and (max-width: $md) {
+    .text-center-xs {
+        text-align: center !important;
+    }
+}
+
+.no-margin-bottom {
+    margin-bottom: 0 !important;
+}
+
+body {
+    background: #fff;
+    font-family: 'Lato', sans-serif;
+    // font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    max-width: 100%;
+    overflow-x: hidden;
+    color: #323232; // padding-top: 6rem;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+* {
+    &:focus {
+        outline: none !important;
+    }
+}

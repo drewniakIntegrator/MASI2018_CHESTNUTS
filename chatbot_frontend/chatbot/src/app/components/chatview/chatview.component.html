@@ -1,0 +1,26 @@
+<div class="chatbot-wrapper">
+  <div class="chat">
+    <div class="chat__header">
+
+    </div>
+    <div class="chat__body">
+      <div class="chat-message" *ngFor="let item of messages">
+        <div class="chat-message__avatar"[ngClass]="{'chat-message__avatar--other': item.isHuman}">
+        </div>
+        <div class="chat-message__text" [ngClass]="{'chat-message__text--other': item.isHuman}">
+          <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': item.isHuman}"></div>
+          <div class="chat-message__text--text">
+              {{item.text}}{{item.date}}{{item.isHuman}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chat__footer">
+      <form (submit)="sendMessage()" ngNativeValidate>
+          <textarea [disabled]="isSending" name="message" required class="txtarea" [(ngModel)]="message" placeholder="Zapytaj mnie o coś..">
+          </textarea>
+          <button [disabled]="isSending" type="submit" class="btn">WYŚLIJ</button>
+      </form>
+    </div>
+  </div>
+</div>

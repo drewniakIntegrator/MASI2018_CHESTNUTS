@@ -2,35 +2,46 @@ $bg: linear-gradient(-15deg, #F3A847, #FF7700);
 $bghover: linear-gradient(-15deg, #e2A736, #dd6600);
 $basebg:#f2f2f2;
 
-body{
-    background-color: yellow;
+.chatbot-wrapper {
+    background: rgba(253,139,38,1);
+    background: -moz-linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
+    background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(253,139,38,1)), color-stop(100%, rgba(251,194,118,1)));
+    background: -webkit-linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
+    background: -o-linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
+    background: -ms-linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
+    background: linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fd8b26', endColorstr='#fbc276', GradientType=1 );
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-items: center;
 }
-.chatbot-wrapper{
-    background: $bg;
-    padding: 3rem;
-}
-.chat{
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+.chat {
     background-color: $basebg;
     margin-left: auto;
-    margin-right:auto;
+    margin-right: auto;
     font-size: 10px;
     border-radius: 1rem;
     width: 50rem;
-    &__header{
+    box-shadow: 0px 4px 6px -1px rgba(0,0,0, 0.4);
+    &__header {
         height: 3rem;
     }
-    &__footer{
+    &__footer {
         height: 7.5rem;
     }
-    &__body{
+    &__body {
         height: 43rem;
     }
-    
 }
 
-.chat-message{
-    &__avatar{
+.chat-message {
+    &__avatar {
         background-color: #fff;
         border-radius: 50%;
         float: left;
@@ -40,15 +51,14 @@ body{
         margin-left: 2rem;
         height: 4rem;
     }
-    &__avatar--other{
+    &__avatar--other {
         float: right;
         margin-right: 2rem;
-        &::after{
+        &::after {
             clear: both;
         }
     }
-    
-    &__text{
+    &__text {
         color: $basebg;
         text-align: center;
         font-size: 1.2rem;
@@ -62,7 +72,7 @@ body{
         margin-left: 3rem;
         height: 4rem;
         z-index: 999;
-        &--pointer{
+        &--pointer {
             height: 1.5rem;
             width: 1.5rem;
             background-color: #FF7700;
@@ -71,28 +81,28 @@ body{
             margin-top: 1rem;
             transform: rotate(45deg);
         }
-        &--text{
+        &--text {
             height: 4rem;
             line-height: 4rem;
             vertical-align: middle;
         }
-        &::after{
+        &::after {
             clear: both;
         }
     }
-    &__text--other{
+    &__text--other {
         margin-right: 1rem;
         float: right;
         z-index: 999;
-        &--pointer{
+        &--pointer {
             background-color: #f69d37;
             margin-left: 34.7rem;
         }
     }
 }
 
-.txtarea{
-    resize: none;
+.txtarea {
+    resize: vertical;
     border: none;
     border-top-left-radius: 1rem;
     border-bottom-left-radius: 1rem;
@@ -102,13 +112,13 @@ body{
     margin: 1rem;
     outline: none;
     font-size: 1rem;
-    float:left;
+    float: left;
     color: #555;
     text-align: left;
     font-size: 1.2rem;
 }
 
-.btn{
+.btn {
     float: right;
     font-weight: 500;
     background: $bg;
@@ -120,13 +130,11 @@ body{
     margin: 1rem;
     height: 5.5rem;
     width: 10rem;
-    outline: none;
     margin-left: 0rem;
-    &::after{
+    &::after {
         clear: both;
     }
-    &:hover{
+    &:hover {
         background: $bghover;
     }
 }
-

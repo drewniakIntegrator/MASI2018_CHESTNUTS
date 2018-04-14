@@ -21,6 +21,7 @@ ul>li {
 
 html {
     font-size: 10px;
+    height: 100%;
 }
 
 .minheight {
@@ -62,6 +63,7 @@ body {
     font-weight: 300;
     max-width: 100%;
     overflow-x: hidden;
+    min-height: 100%;
     color: #323232; // padding-top: 6rem;
 }
 

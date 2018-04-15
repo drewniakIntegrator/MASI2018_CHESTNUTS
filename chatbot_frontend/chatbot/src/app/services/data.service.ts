@@ -7,9 +7,9 @@ export class DataService {
 
   messages: Message[] = [];
   constructor() {
-    for (let i = 0; i < 5; i++) {
-      this.messages.push(new Message(`0${i + 1}:01:1992 10:22`, `wiadomosc${i + 3}`, i % 2 === 0));
-    }
+    // for (let i = 0; i < 5; i++) {
+       this.messages.push(new Message(``, `Hello! How can I help you?`, false));
+    // }
   }
 
   getMessages(): Observable<Message[]> {

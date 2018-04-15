@@ -109,9 +109,29 @@ $fontColor: #323232;
             line-height: 4rem;
             vertical-align: middle;
         }
+        &--published{
+            font-size: 1.4rem;
+            color: #c96105;
+            margin-left: 1rem;
+            margin-right: auto;
+            text-align: initial;
+            &--human{
+                color: #555555;
+                margin-left: auto;
+                margin-right: 1rem;
+                text-align: end;
+            }
+            &--time{
+                font-size: 1.125rem;
+                color: #989898;
+            }
+        }
         &::after {
             clear: both;
         }
+    }
+    &__text--robot {
+        border-top:2px solid #fff;
     }
     &__text--other {
         margin-left: 0;

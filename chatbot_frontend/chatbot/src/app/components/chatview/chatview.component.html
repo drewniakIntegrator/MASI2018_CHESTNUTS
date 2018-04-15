@@ -7,19 +7,23 @@
       <div class="chat-message" *ngFor="let item of messages">
         <div class="chat-message__avatar"[ngClass]="{'chat-message__avatar--other': item.isHuman}">
         </div>
-        <div class="chat-message__text" [ngClass]="{'chat-message__text--other': item.isHuman}">
+        <div class="chat-message__text" [ngClass]="{'chat-message__text--other chat-message__text--robot': item.isHuman}">
           <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': item.isHuman}"></div>
           <div class="chat-message__text--text">
-              {{item.text}}{{item.date}}{{item.isHuman}}
+              {{item.text}}
           </div>
+          <div class="chat-message__text--published" [ngClass]="{'chat-message__text--published--human': item.isHuman}">
+            {{item.isHuman ? 'User' : 'Chatbot'}}
+            <span class="chat-message__text--published--time">{{item.date}}</span>
+        </div>
         </div>
       </div>
     </div>
     <div class="chat__footer">
       <form (submit)="sendMessage()" ngNativeValidate>
-          <textarea [disabled]="isSending" name="message" rows="1" required class="txtarea" [(ngModel)]="message" placeholder="Zapytaj mnie o coś..">
+          <textarea id="text_message" [disabled]="isSending" name="message" rows="1" required class="txtarea" [(ngModel)]="message" placeholder="Zapytaj mnie o coś..">
           </textarea>
-          <button [disabled]="isSending" type="submit" class="btn">WYŚLIJ</button>
+          <button id="btn_send" [disabled]="isSending" type="submit" class="btn">WYŚLIJ</button>
       </form>
     </div>
   </div>

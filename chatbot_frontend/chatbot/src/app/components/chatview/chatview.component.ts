@@ -12,6 +12,7 @@ export class ChatviewComponent implements OnInit {
   isSending: boolean;
   message: string;
   messages: Message[] = [];
+  x = 0;
 
   constructor(private dataService: DataService) { }
 
@@ -19,12 +20,17 @@ export class ChatviewComponent implements OnInit {
     this.dataService.getMessages()
       .subscribe((data) => { this.messages = data; });
   }
-
   sendMessage() {
     if (this.message) {
+      const tab = ['Hello', 'What category do you like?', 'Older or newer film? ', 
+      'Which actor do you like?', 'Matrix, Matrix 2', 'Just google bro. I am tired', 'What did you say?'];
       console.log(this.message);
       this.isSending = true;
-      setTimeout(() => { this.isSending = false; this.message = ''; }, 2000);
+      this.messages.push(new Message(`dsa`, this.message, true));
+      setTimeout(() => { this.isSending = false; this.message = '';
+        this.messages.push(new Message(`dsa`, tab[this.x], false));
+      }, 2000);
+      this.x++;
     }
   }
 }

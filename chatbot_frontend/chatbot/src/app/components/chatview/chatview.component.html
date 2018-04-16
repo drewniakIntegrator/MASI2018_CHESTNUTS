@@ -1,9 +1,6 @@
 <div class="chatbot-wrapper">
   <div class="chat">
-    <div class="chat__header">
-
-    </div>
-    <div class="chat__body">
+    <div class="chat__body" #chatBody>
       <div class="chat-message" *ngFor="let item of messages">
         <div class="chat-message__avatar"[ngClass]="{'chat-message__avatar--other': item.isHuman}">
         </div>

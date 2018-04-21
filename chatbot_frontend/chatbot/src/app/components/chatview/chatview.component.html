@@ -17,8 +17,8 @@
       </div>
     </div>
     <div class="chat__footer">
-      <form (submit)="sendMessage()" ngNativeValidate>
-          <textarea id="text_message" [disabled]="isSending" name="message" rows="1" required class="txtarea" [(ngModel)]="message" placeholder="Zapytaj mnie o coś..">
+      <form (submit)="sendMessage()" (keyup.enter)="onEnter(sendMessage())">
+          <textarea #textMessage [disabled]="isSending" name="message" rows="1" required class="txtarea" [(ngModel)]="message" placeholder="Zapytaj mnie o coś..">
           </textarea>
           <button id="btn_send" [disabled]="isSending" type="submit" class="btn">WYŚLIJ</button>
       </form>

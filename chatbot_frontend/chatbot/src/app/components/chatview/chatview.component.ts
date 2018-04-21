@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Message } from '../../models/message';
 
@@ -9,7 +9,8 @@ import { Message } from '../../models/message';
 })
 export class ChatviewComponent implements OnInit {
 
-  @ViewChild('chatBody') el: ElementRef;
+  @ViewChild('chatBody') bodyEl: ElementRef;
+  @ViewChild('textMessage') textEl: ElementRef;
 
   isSending: boolean;
   message: string;
@@ -32,16 +33,19 @@ export class ChatviewComponent implements OnInit {
       this.messages.push(new Message(`dsa`, this.message, true));
       this.message = '';
 
+
       setTimeout(() => {
-        this.el.nativeElement.scrollTo(0, this.el.nativeElement.scrollHeight);
+        this.bodyEl.nativeElement.scrollTo(0, this.bodyEl.nativeElement.scrollHeight);
       }, 10);
 
       setTimeout(() => {
         this.isSending = false;
         this.messages.push(new Message(`dsa`, tab[this.x], false));
-
         setTimeout(() => {
-          this.el.nativeElement.scrollTo(0, this.el.nativeElement.scrollHeight);
+          this.bodyEl.nativeElement.scrollTo(0, this.bodyEl.nativeElement.scrollHeight);
+        }, 10);
+        setTimeout(() => {
+          this.textEl.nativeElement.focus();
         }, 10);
       }, 2000);
       this.x++;

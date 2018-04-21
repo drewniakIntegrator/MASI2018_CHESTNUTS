@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AmazonConnector {
 
-    public ItemSearchResponse sendToAmazon(ItemSearchRequest request) {
+    public ItemSearchResponse send(ItemSearchRequest request) {
         AwsApaRequester requester = new AwsApaRequesterImpl();
         return requester.itemSearch(request);
     }

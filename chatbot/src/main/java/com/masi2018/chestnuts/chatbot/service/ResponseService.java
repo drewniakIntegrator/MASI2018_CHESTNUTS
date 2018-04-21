@@ -1,12 +1,13 @@
 package com.masi2018.chestnuts.chatbot.service;
 
+import am.ik.aws.apa.jaxws.ItemSearchResponse;
+import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Service
 public class ResponseService {
 
-    public String prepareResponse(String amazonResponse) {
-        throw new NotImplementedException();
+    public String prepareResponse(MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {
+        return "";
     }
 }

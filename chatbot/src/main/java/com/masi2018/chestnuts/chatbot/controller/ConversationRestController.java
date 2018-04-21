@@ -20,7 +20,7 @@ public class ConversationRestController {
 
     @PostMapping
     private ResponseEntity<String> sendUserMessage(@RequestBody String message) {
-        return ResponseEntity.ok(conversationService.prepareForWatson(message));
+        return ResponseEntity.ok(conversationService.sendMessage(message));
     }
 
     @GetMapping(path = "/categories")

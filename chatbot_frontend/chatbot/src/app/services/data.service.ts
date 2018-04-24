@@ -7,7 +7,8 @@ export class DataService {
 
   messages: Message[] = [];
   constructor() {
-    this.messages.push(new Message(``, `Hello! How can I help you?`, false));
+    // wywolanie po sendName
+    // this.messages.push(new Message(``, `Hello! How can I help you?`, false, 'x'));
   }
 
   getMessages(): Observable<Message[]> {

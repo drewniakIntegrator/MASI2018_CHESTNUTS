@@ -1,5 +1,20 @@
 <div class="chatbot-wrapper">
   <div class="chat">
+          <form id='form-user' class="chat__modal-login" (submit)="sendName()" (keyup.enter)="onEnter(sendName())">
+            <p class="chat__modal-login__name">
+              Chatbot Amazon
+            </p>
+          <p class="chat__modal-login__welcome">
+              Hello user!<br> Give me your name, to let me know how to call you.
+          </p>
+          <div class="chat__modal-login__wrapper-input">
+            <label class="visuallyhidden">
+              Write your name
+            </label>
+            <input #userName id = "user-name" class = "user-name" value="" required placeholder="Write your name">
+            <button class="btn" id="send-name">SEND</button>
+          </div>
+        </form>
     <div class="chat__body" #chatBody>
       <div class="chat-message" *ngFor="let item of messages">
         <div class="chat-message__avatar"[ngClass]="{'chat-message__avatar--other': item.isHuman}">
@@ -10,7 +25,7 @@
               {{item.text}}
           </div>
           <div class="chat-message__text--published" [ngClass]="{'chat-message__text--published--human': item.isHuman}">
-            {{item.isHuman ? 'User' : 'Chatbot'}}
+            {{item.isHuman ? item.nameUser : 'Chatbot'}}
             <span class="chat-message__text--published--time">{{item.date}}</span>
         </div>
         </div>
@@ -20,7 +35,7 @@
       <form (submit)="sendMessage()" (keyup.enter)="onEnter(sendMessage())">
           <textarea #textMessage [disabled]="isSending" name="message" rows="1" required class="txtarea" [(ngModel)]="message" placeholder="Zapytaj mnie o coś..">
           </textarea>
-          <button id="btn_send" [disabled]="isSending" type="submit" class="btn">WYŚLIJ</button>
+          <button id="btn_send" [disabled]="isSending" type="submit" class="btn">SEND</button>
       </form>
     </div>
   </div>

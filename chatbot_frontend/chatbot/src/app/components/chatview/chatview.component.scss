@@ -3,6 +3,27 @@ $bghover: linear-gradient(-15deg, #e2A736, #dd6600);
 $basebg:#f2f2f2;
 $fontColor: #323232;
 
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+        &.focusable:active,.focusable:focus {
+            clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+    white-space: inherit;
+   }
+}
+
 .chatbot-wrapper {
     background: rgba(253,139,38,1);
     background: -moz-linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
@@ -24,6 +45,7 @@ $fontColor: #323232;
 }
 
 .chat {
+    position: relative;
     background-color: $basebg;
     margin-left: auto;
     margin-right: auto;
@@ -36,6 +58,58 @@ $fontColor: #323232;
     display: flex;
     flex-direction: column;
     box-shadow: 0px 4px 6px -1px rgba(0,0,0, 0.4);
+    .hide-form{
+        display: none;
+        z-index: -99999999;
+    }
+    &__modal-login{
+        position: absolute;
+        top:0;
+        left:0;
+        height: 100%;
+        width: 100%;
+        z-index: 9999999999;
+        background-color: $basebg;
+        text-align: center;
+        &__name{
+            font-size: 5rem;
+            color:black;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        &__welcome{
+            font-size: 2rem;
+            color:black;
+            text-align: center;
+            margin-bottom: 8rem;
+        }
+        &__wrapper-input{
+            width: 50%;
+            margin-left:auto;
+            margin-right: auto;
+            margin-bottom: 20rem;
+            margin-top: auto;
+            height: 3rem;
+            & .user-name{
+                border: none;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                color: $fontColor;
+                text-align: left;
+                font-size: 1.4rem;
+                padding: 1.5rem 2rem;
+                line-height: 2rem;
+                flex-grow: 1;
+                min-height: 5rem;
+                height: 5rem;
+                box-shadow: none;
+                transition: all 0.3s ease;
+                &:focus {
+                    box-shadow: 0px 0px 0px 1px #fd8b26;
+                }
+            }
+        }
+    }
     &__header {
         
     }
@@ -62,16 +136,18 @@ $fontColor: #323232;
         margin-top: 0;
     }
     &__avatar {
-        background-color: #fff;
+        background-image: url('robot.jpg');
+        background-size: cover;
         border-radius: 50%;
         float: left;
         width: 5rem;
         height: 5rem;
         margin-top: 0.5rem;
-        border: 2px solid #323232;
+        border: 2px solid #fd8b26;
     }
     &__avatar--other {
-        float: right;
+        background-image: url('user.jpg');
+        float: right;  
         &::after {
             clear: both;
         }

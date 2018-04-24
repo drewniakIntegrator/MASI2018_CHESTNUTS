@@ -12,6 +12,7 @@ export class ChatviewComponent implements OnInit {
   @ViewChild('chatBody') bodyEl: ElementRef;
   @ViewChild('textMessage') textEl: ElementRef;
 
+  nameUser: string;
   isSending: boolean;
   message: string;
   messages: Message[] = [];
@@ -23,6 +24,17 @@ export class ChatviewComponent implements OnInit {
     this.dataService.getMessages()
       .subscribe((data) => { this.messages = data; });
   }
+
+  sendName() {
+    const form_user = document.getElementById('form-user');
+    this.nameUser = ((document.getElementById('user-name') as HTMLInputElement).value);
+    if (this.nameUser === '') {
+      this.nameUser = 'User';
+    }
+    form_user.classList.add('hide-form');
+    this.messages.push(new Message(``, `Hello! How can I help you?`, false, 'x'));
+  }
+
   sendMessage() {
     if (this.message) {
 
@@ -30,7 +42,7 @@ export class ChatviewComponent implements OnInit {
         'Which actor do you like?', 'Matrix, Matrix 2', 'Just google bro. I am tired', 'What did you say?'];
 
       this.isSending = true;
-      this.messages.push(new Message(`dsa`, this.message, true));
+      this.messages.push(new Message(`dsa`, this.message, true, this.nameUser));
       this.message = '';
 
 
@@ -40,7 +52,7 @@ export class ChatviewComponent implements OnInit {
 
       setTimeout(() => {
         this.isSending = false;
-        this.messages.push(new Message(`dsa`, tab[this.x], false));
+        this.messages.push(new Message(`dsa`, tab[this.x], false, 'x'));
         setTimeout(() => {
           this.bodyEl.nativeElement.scrollTo(0, this.bodyEl.nativeElement.scrollHeight);
         }, 10);

@@ -17,6 +17,8 @@ export class ChatviewComponent implements OnInit {
   message: string;
   messages: Message[] = [];
   x = 0;
+  username: string;
+  afterstart: boolean;
 
   constructor(private dataService: DataService) { }
 
@@ -26,13 +28,10 @@ export class ChatviewComponent implements OnInit {
   }
 
   sendName() {
-    const form_user = document.getElementById('form-user');
-    this.nameUser = ((document.getElementById('user-name') as HTMLInputElement).value);
-    if (this.nameUser === '') {
-      this.nameUser = 'User';
+    if (this.username) {
+      this.afterstart = true;
+      this.messages.push(new Message(``, `Hello! How can I help you?`, false, ''));
     }
-    form_user.classList.add('hide-form');
-    this.messages.push(new Message(``, `Hello! How can I help you?`, false, 'x'));
   }
 
   sendMessage() {
@@ -42,7 +41,7 @@ export class ChatviewComponent implements OnInit {
         'Which actor do you like?', 'Matrix, Matrix 2', 'Just google bro. I am tired', 'What did you say?'];
 
       this.isSending = true;
-      this.messages.push(new Message(`dsa`, this.message, true, this.nameUser));
+      this.messages.push(new Message(`dsa`, this.message, true, this.username));
       this.message = '';
 
 

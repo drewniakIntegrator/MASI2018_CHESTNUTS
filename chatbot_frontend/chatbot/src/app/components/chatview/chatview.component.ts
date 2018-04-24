@@ -12,10 +12,13 @@ export class ChatviewComponent implements OnInit {
   @ViewChild('chatBody') bodyEl: ElementRef;
   @ViewChild('textMessage') textEl: ElementRef;
 
+  nameUser: string;
   isSending: boolean;
   message: string;
   messages: Message[] = [];
   x = 0;
+  username: string;
+  afterstart: boolean;
 
   constructor(private dataService: DataService) { }
 
@@ -23,6 +26,14 @@ export class ChatviewComponent implements OnInit {
     this.dataService.getMessages()
       .subscribe((data) => { this.messages = data; });
   }
+
+  sendName() {
+    if (this.username) {
+      this.afterstart = true;
+      this.messages.push(new Message(``, `Hello! How can I help you?`, false, ''));
+    }
+  }
+
   sendMessage() {
     if (this.message) {
 
@@ -30,7 +41,7 @@ export class ChatviewComponent implements OnInit {
         'Which actor do you like?', 'Matrix, Matrix 2', 'Just google bro. I am tired', 'What did you say?'];
 
       this.isSending = true;
-      this.messages.push(new Message(`dsa`, this.message, true));
+      this.messages.push(new Message(`dsa`, this.message, true, this.username));
       this.message = '';
 
 
@@ -40,7 +51,7 @@ export class ChatviewComponent implements OnInit {
 
       setTimeout(() => {
         this.isSending = false;
-        this.messages.push(new Message(`dsa`, tab[this.x], false));
+        this.messages.push(new Message(`dsa`, tab[this.x], false, 'x'));
         setTimeout(() => {
           this.bodyEl.nativeElement.scrollTo(0, this.bodyEl.nativeElement.scrollHeight);
         }, 10);

@@ -1,5 +1,6 @@
 <div class="chatbot-wrapper">
   <div class="chat">
+
     <form id='form-user' *ngIf='!afterstart' ngNativeValidate class="chat__modal-login" (submit)="sendName()" (keyup.enter)="onEnter(sendName())">
       <p class="chat__modal-login__name">
         Chatbot Amazon
@@ -16,6 +17,12 @@
         <button class="btn" id="send-name">SEND</button>
       </div>
     </form>
+
+    <div class="chat__header">
+        <div class="chat__header--control" (click)="exitChat()"><i class="material-icons">highlight_off</i></div>
+        <div class="chat__header--control" (click)="resetChat()"><i class="material-icons">autorenew</i></div>
+    </div>
+
     <div class="chat__body" *ngIf='afterstart' #chatBody>
       <div class="chat-message" *ngFor="let item of messages">
         <div class="chat-message__avatar" [ngClass]="{'chat-message__avatar--other': item.isHuman}">
@@ -37,6 +44,7 @@
         </div>
       </div>
     </div>
+
     <div class="chat__footer">
       <form (submit)="sendMessage()" ngNativeValidate (keyup.enter)="onEnter(sendMessage())">
         <textarea #textMessage [disabled]="isSending" name="message" rows="1" required class="txtarea" [(ngModel)]="message" placeholder="Zapytaj mnie o coś..">

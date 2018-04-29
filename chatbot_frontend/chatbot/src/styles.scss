@@ -1,7 +1,7 @@
 @import './app/styles/_base.scss';
 @import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900&subset=latin-ext');
 @import url('https://fonts.googleapis.com/css?family=Raleway:200,200i,300,300i,400,400i,600,700,800,900&subset=latin-ext');
-
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 $uh: 1700px;
 $hd: 1450px;
 $lg: 1100px;
@@ -77,4 +77,29 @@ body {
     &:focus {
         outline: none !important;
     }
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 21px;  /* Preferred icon size */
+  display: inline-block;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  color: #f2f2f2;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
 }

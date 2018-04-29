@@ -71,11 +71,21 @@ export class ChatviewComponent implements OnInit {
         }, 10);
       }, 1000);
       this.x++;
+      this.hintOccurs = false;
     }
   }
 
   chooseHint(hint) {
     // Przekierowanie na strone wybranego produktu
     console.log(hint.target.innerText);
+  }
+
+  resetChat() {
+    location.reload();
+  }
+
+  exitChat() {
+    window.open(String(location), '_self', '');
+    window.close();
   }
 }

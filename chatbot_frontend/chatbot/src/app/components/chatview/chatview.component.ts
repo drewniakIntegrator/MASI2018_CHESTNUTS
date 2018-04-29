@@ -30,13 +30,14 @@ export class ChatviewComponent implements OnInit {
 
       this.dataService.getHints()
       .subscribe((data) => { this.hintList = data; });
+
+      this.hintList.push('SampleFilm1', 'SampleFilm2', 'SampleFilm3');
   }
 
   sendName() {
     if (this.username) {
       this.afterstart = true;
       this.messages.push(new Message(``, `Hello! How can I help you?`, false, ''));
-      this.hintList.push('SampleFilm1', 'SampleFilm2', 'SampleFilm3');
     }
   }
 
@@ -81,11 +82,15 @@ export class ChatviewComponent implements OnInit {
   }
 
   resetChat() {
-    location.reload();
+    this.messages.splice(0, this.messages.length);
+    this.username = '';
+    this.nameUser = '';
+    this.afterstart = false;
+    this.hintList.splice(0, this.hintList.length);
   }
 
   exitChat() {
-    window.open(String(location), '_self', '');
-    window.close();
+    //window.open(String(location), '_self', '');
+    //window.close();
   }
 }

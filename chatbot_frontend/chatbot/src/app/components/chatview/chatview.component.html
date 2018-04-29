@@ -31,6 +31,11 @@
           </div>
         </div>
       </div>
+      <div class="chat-hints" *ngIf='hintOccurs'>
+        <div *ngFor="let hint of hintList">
+          <button class="chat-hints--hintbtn" (click)="chooseHint($event)">{{hint}}</button>
+        </div>
+      </div>
     </div>
     <div class="chat__footer">
       <form (submit)="sendMessage()" ngNativeValidate (keyup.enter)="onEnter(sendMessage())">

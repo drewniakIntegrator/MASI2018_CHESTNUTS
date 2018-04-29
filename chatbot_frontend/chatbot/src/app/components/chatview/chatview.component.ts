@@ -19,18 +19,24 @@ export class ChatviewComponent implements OnInit {
   x = 0;
   username: string;
   afterstart: boolean;
+  hintList: Array<string> = [];
+  hintOccurs: boolean;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
     this.dataService.getMessages()
       .subscribe((data) => { this.messages = data; });
+
+      this.dataService.getHints()
+      .subscribe((data) => { this.hintList = data; });
   }
 
   sendName() {
     if (this.username) {
       this.afterstart = true;
       this.messages.push(new Message(``, `Hello! How can I help you?`, false, ''));
+      this.hintList.push('SampleFilm1', 'SampleFilm2', 'SampleFilm3');
     }
   }
 
@@ -52,14 +58,24 @@ export class ChatviewComponent implements OnInit {
       setTimeout(() => {
         this.isSending = false;
         this.messages.push(new Message(`dsa`, tab[this.x], false, 'x'));
+        if (this.x > 0) {
+          setTimeout(() => {
+            this.hintOccurs = true;
+          }, 200);
+        }
         setTimeout(() => {
           this.bodyEl.nativeElement.scrollTo(0, this.bodyEl.nativeElement.scrollHeight);
         }, 10);
         setTimeout(() => {
           this.textEl.nativeElement.focus();
         }, 10);
-      }, 2000);
+      }, 1000);
       this.x++;
     }
+  }
+
+  chooseHint(hint) {
+    // Przekierowanie na strone wybranego produktu
+    console.log(hint.target.innerText);
   }
 }

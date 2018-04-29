@@ -32,15 +32,15 @@
           <div class="chat-message__text--text">
             {{item.text}}
           </div>
+          <div class="chat-message__text__hints" *ngIf='hintOccurs'>
+              <div *ngFor="let hint of hintList">
+                <button class="chat-message__text__hints--hintbtn" (click)="chooseHint($event)">{{hint}}</button>
+              </div>
+          </div>
           <div class="chat-message__text--published" [ngClass]="{'chat-message__text--published--human': item.isHuman}">
             {{item.isHuman ? item.nameUser : 'Chatbot'}}
             <span class="chat-message__text--published--time">{{item.date}}</span>
           </div>
-        </div>
-      </div>
-      <div class="chat-hints" *ngIf='hintOccurs'>
-        <div *ngFor="let hint of hintList">
-          <button class="chat-hints--hintbtn" (click)="chooseHint($event)">{{hint}}</button>
         </div>
       </div>
     </div>

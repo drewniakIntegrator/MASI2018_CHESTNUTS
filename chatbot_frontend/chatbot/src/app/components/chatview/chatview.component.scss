@@ -171,10 +171,10 @@ $fontColor: #323232;
         color: $fontColor;
         text-align: center;
         font-size: 1.6rem;
+        float: left;
         background-color: #fff;
         border-top: 2px solid #fd8b26;
         border-radius: 4px;
-        float: left;
         max-width: calc(100% - 7rem);
         width: auto;
         min-height: 6rem;
@@ -213,6 +213,7 @@ $fontColor: #323232;
             margin-left: 0;
             margin-right: auto;
             text-align: initial;
+            float:left;
             &--human{
                 color: #555555;
                 margin-left: auto;
@@ -223,11 +224,34 @@ $fontColor: #323232;
                 font-size: 1.125rem;
                 color: #989898;
             }
-        }
-        &::after {
+          }
+          &__hints{
+            text-align: center;
+            font-size: 1.2rem;
+            width: auto;
+            position: relative;
+            min-height: 2rem;
+            padding-bottom: 0.5rem;
+            padding-top: 0.5rem;
+            line-height: 2rem;
+            vertical-align: middle;
+            &--hintbtn{
+              color: #323232;
+              border-radius: 15px;
+              border: 0.5px solid #fd8b26;
+              background-color: #fff;
+              cursor: pointer;
+              min-width: 8rem;
+              margin-left: 2px;
+              margin-top:2px;
+              position: relative;
+              float: left;
+            }
+          }
+          &::after {
             clear: both;
         }
-    }
+        }
     &__text--robot {
         border-top:2px solid #fff;
         .chat-message__text--text {
@@ -239,42 +263,6 @@ $fontColor: #323232;
         margin-right: 2rem;
         float: right;
     }
-}
-
-.chat-hints{
-  width: 100%;
-  float: left;
-  margin-top: 1rem;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  &--hintbtn{
-    float: left;
-    font-weight: 500;
-    font-size: 1.6rem;
-    color: #323232;
-    border-radius: 15px;
-    border: 0.5px solid #fd8b26;
-    background-color: #fff;
-    cursor: pointer;
-    min-height: 4rem;
-    min-width: 12rem;
-    flex-shrink: 0;
-    flex-grow: 0;
-    height: 1rem;
-    margin-left: 1rem;
-    margin-top: 1rem;
-    transition: all 0.3s ease;
-    vertical-align: middle;
-    line-height: 2rem;
-    padding: 1rem;
-    &::after{
-      clear: both;
-    }
-  }
-  &::after{
-    clear: both;
-  }
 }
 
 .txtarea {

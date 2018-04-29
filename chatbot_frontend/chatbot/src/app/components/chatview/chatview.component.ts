@@ -31,7 +31,7 @@ export class ChatviewComponent implements OnInit {
       this.dataService.getHints()
       .subscribe((data) => { this.hintList = data; });
 
-      this.hintList.push('SampleFilm1', 'SampleFilm2', 'SampleFilm3');
+      this.hintList.push('SampleFilm1', 'SampleFilm2', 'SampleFilm3', 'SampleFilm4');
   }
 
   sendName() {

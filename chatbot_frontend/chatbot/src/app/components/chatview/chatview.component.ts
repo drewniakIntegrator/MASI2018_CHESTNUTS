@@ -74,9 +74,8 @@ export class ChatviewComponent implements OnInit {
         }
     }
 
-    chooseHint(hint) {
-        // Przekierowanie na strone wybranego produktu
-        console.log(hint.target.innerText);
+    chooseHint(hint: string) {
+        this.message = hint;
     }
 
     resetChat() {

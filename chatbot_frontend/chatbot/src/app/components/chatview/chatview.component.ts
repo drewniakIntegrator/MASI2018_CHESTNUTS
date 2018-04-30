@@ -1,16 +1,18 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Message } from '../../models/message';
 import { MESSAGESSTATIC } from '../../models/messagesstatic';
+import { ScrollbarComponent } from 'ngx-scrollbar';
 
 @Component({
     selector: 'app-chatview',
     templateUrl: './chatview.component.html',
-    styleUrls: ['./chatview.component.scss']
+    styleUrls: ['./chatview.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ChatviewComponent implements OnInit {
 
-    @ViewChild('chatBody') bodyEl: ElementRef;
+    @ViewChild(ScrollbarComponent) scrollRef: ScrollbarComponent;
     @ViewChild('textMessage') textEl: ElementRef;
 
     nameUser: string;
@@ -47,11 +49,6 @@ export class ChatviewComponent implements OnInit {
             this.messages.push(new Message('', this.message, true));
             this.message = '';
 
-
-            setTimeout(() => {
-                this.bodyEl.nativeElement.scrollTo(0, this.bodyEl.nativeElement.scrollHeight);
-            }, 10);
-
             setTimeout(() => {
                 this.isSending = false;
 
@@ -62,12 +59,12 @@ export class ChatviewComponent implements OnInit {
                 this.messages.push(MESSAGESSTATIC[this.mockMessageIndex]);
 
                 setTimeout(() => {
-                    this.bodyEl.nativeElement.scrollTo(0, this.bodyEl.nativeElement.scrollHeight);
+                    this.scrollRef.scrollYTo(this.scrollRef.view.scrollHeight, 600);
                 }, 10);
 
-                // setTimeout(() => {
-                //     this.textEl.nativeElement.focus();
-                // }, 10);
+                setTimeout(() => {
+                    this.textEl.nativeElement.focus();
+                }, 10);
             }, 1000);
 
             this.mockMessageIndex++;
@@ -76,6 +73,7 @@ export class ChatviewComponent implements OnInit {
 
     chooseHint(hint: string) {
         this.message = hint;
+        this.sendMessage();
     }
 
     resetChat() {

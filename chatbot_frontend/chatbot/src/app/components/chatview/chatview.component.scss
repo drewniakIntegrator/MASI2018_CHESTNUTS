@@ -134,10 +134,17 @@ $fontColor: #323232;
         }
     }
     &__body {
-        padding: 3rem;
+        padding: 3rem 0 3rem 3rem;
         flex-grow: 1;
         overflow-y: auto;
     }
+}
+
+.fixRight {
+    padding-right: 3rem;
+}
+.scrollFix {
+    right: 11px !important;
 }
 
 .chat-message {

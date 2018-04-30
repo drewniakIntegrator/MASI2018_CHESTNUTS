@@ -1,5 +1,5 @@
 <div class="chatbot-wrapper">
-  <div class="chat-login" *ngIf='!afterstart' >
+  <div class="chat-login" *ngIf='!afterstart'>
     <form id='form-user' ngNativeValidate class="chat__modal-login" (submit)="sendName()" (keyup.enter)="onEnter(sendName())">
       <p class="chat-login__title">
         Chatbot Amazon
@@ -25,19 +25,15 @@
     </div>
 
     <div class="chat__body" #chatBody>
-      <div class="chat-message" *ngFor="let item of messages">
+      <div class="chat-message" *ngFor="let item of messages; let lastItem = last;">
         <div class="chat-message__avatar" [ngClass]="{'chat-message__avatar--other': item.isHuman}">
         </div>
         <div class="chat-message__text" [ngClass]="{'chat-message__text--other chat-message__text--robot': item.isHuman}">
           <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': item.isHuman}"></div>
-          <div class="chat-message__text--text">
-            {{item.text}}
+          <div class="chat-message__text--text" [innerHTML]="item.text"></div>
+          <div class="chat-message__text__hints" *ngIf='item.hints && item.hints.length > 0'>
+            <button *ngFor="let hint of item.hints" [ngClass]="{'chat-message__text__hint--old': !lastItem}" class="chat-message__text__hint" (click)="chooseHint($event)">{{hint}}</button>
           </div>
-          <!-- <div class="chat-message__text__hints" *ngIf='hintOccurs'>
-            <div *ngFor="let hint of hintList">
-              <button class="chat-message__text__hints--hintbtn" (click)="chooseHint($event)">{{hint}}</button>
-            </div>
-          </div> -->
           <div class="chat-message__text--published" [ngClass]="{'chat-message__text--published--human': item.isHuman}">
             {{item.isHuman ? nameUser : 'Chatbot'}}
             <span class="chat-message__text--published--time">{{item.date}}</span>

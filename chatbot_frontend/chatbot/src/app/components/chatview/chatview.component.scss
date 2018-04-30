@@ -2,7 +2,6 @@ $bg: linear-gradient(-15deg, #F3A847, #FF7700);
 $bghover: linear-gradient(-15deg, #e2A736, #dd6600);
 $basebg:#f2f2f2;
 $fontColor: #323232;
-
 .visuallyhidden {
     border: 0;
     clip: rect(0 0 0 0);
@@ -13,26 +12,27 @@ $fontColor: #323232;
     position: absolute;
     width: 1px;
     white-space: nowrap;
-        &.focusable:active,.focusable:focus {
-            clip: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto;
-    white-space: inherit;
-   }
+    &.focusable:active,
+    .focusable:focus {
+        clip: auto;
+        height: auto;
+        margin: 0;
+        overflow: visible;
+        position: static;
+        width: auto;
+        white-space: inherit;
+    }
 }
 
 .chatbot-wrapper {
-    background: rgba(253,139,38,1);
-    background: -moz-linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
-    background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(253,139,38,1)), color-stop(100%, rgba(251,194,118,1)));
-    background: -webkit-linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
-    background: -o-linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
-    background: -ms-linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
-    background: linear-gradient(45deg, rgba(253,139,38,1) 0%, rgba(251,194,118,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fd8b26', endColorstr='#fbc276', GradientType=1 );
+    background: rgba(253, 139, 38, 1);
+    background: -moz-linear-gradient(45deg, rgba(253, 139, 38, 1) 0%, rgba(251, 194, 118, 1) 100%);
+    background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(253, 139, 38, 1)), color-stop(100%, rgba(251, 194, 118, 1)));
+    background: -webkit-linear-gradient(45deg, rgba(253, 139, 38, 1) 0%, rgba(251, 194, 118, 1) 100%);
+    background: -o-linear-gradient(45deg, rgba(253, 139, 38, 1) 0%, rgba(251, 194, 118, 1) 100%);
+    background: -ms-linear-gradient(45deg, rgba(253, 139, 38, 1) 0%, rgba(251, 194, 118, 1) 100%);
+    background: linear-gradient(45deg, rgba(253, 139, 38, 1) 0%, rgba(251, 194, 118, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fd8b26', endColorstr='#fbc276', GradientType=1);
     position: absolute;
     top: 0;
     left: 0;
@@ -55,7 +55,7 @@ $fontColor: #323232;
     max-width: 100%;
     display: flex;
     flex-direction: column;
-    box-shadow: 0px 4px 6px -1px rgba(0,0,0, 0.4);
+    box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.4);
     &:after {
         content: '';
         clear: both;
@@ -66,9 +66,9 @@ $fontColor: #323232;
         color: black;
         text-align: center;
         margin-top: 4rem;
-       margin-bottom: 0rem;
+        margin-bottom: 0rem;
     }
-    &__subtitle {    
+    &__subtitle {
         font-size: 1.8rem;
         color: black;
         text-align: center;
@@ -94,67 +94,36 @@ $fontColor: #323232;
     max-height: calc(100vh - 10rem);
     display: flex;
     flex-direction: column;
-    box-shadow: 0px 4px 6px -1px rgba(0,0,0, 0.4);
-    .hide-form{
+    box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.4);
+    .hide-form {
         display: none;
         z-index: -99999999;
     }
-    &__modal-login{
-        &__name{
-            font-size: 5rem;
-            color:black;
+    &__header {
+        padding: 0;
+        flex-shrink: 0;
+        background-color: #fd8b26;
+        &--control {
+            width: 4rem;
+            height: 4rem;
+            line-height: 4rem;
             text-align: center;
-            margin-top: 4rem;
-        }
-        &__welcome{
-            font-size: 2rem;
-            color:black;
-            text-align: center;
-            margin-bottom: 8rem;
-        }
-        &__wrapper-input{
-            width: 50%;
-            margin-left:auto;
-            margin-right: auto;
-            margin-bottom: 20rem;
-            margin-top: auto;
-            height: 3rem;
-            & .user-name{
-                border: none;
-                border-top-left-radius: 4px;
-                border-bottom-left-radius: 4px;
-                color: $fontColor;
-                text-align: left;
-                font-size: 1.4rem;
-                padding: 1.5rem 2rem;
-                line-height: 2rem;
-                flex-grow: 1;
-                min-height: 5rem;
-                height: 5rem;
-                box-shadow: none;
-                transition: all 0.3s ease;
-                &:focus {
-                    box-shadow: 0px 0px 0px 1px #fd8b26;
+            float: right;
+            cursor: pointer;
+            background: transparent;
+            transition: background 0.6s ease;
+            border-left: 1px solid #fcb360;
+            &:hover {
+                // background: #fcb360;
+                i {
+                    color: #323232;
                 }
             }
+            i {
+                line-height: 4rem;
+                transition: color 0.6s ease;
+            }
         }
-    }
-    &__header {
-      padding: 0.7rem;
-      flex-shrink: 0;
-      background-color: #fd8b26;
-      &--control {
-          padding-top: 0.5rem;
-          height: 3.5rem;
-          width: 3.5rem;
-          border-radius: 50%;
-          display: flex;
-          float: right;
-          margin-left: 2rem;
-          &:hover{
-            cursor: pointer;
-          }
-      }
     }
     &__footer {
         border-top: 1px solid #989898;
@@ -236,31 +205,31 @@ $fontColor: #323232;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        &--published{
+        &--published {
             font-size: 1.4rem;
             color: #c96105;
             margin-left: 0;
             margin-right: auto;
             text-align: initial;
-            float:left;
-            &--human{
+            float: left;
+            &--human {
                 color: #555555;
                 margin-left: auto;
                 margin-right: 0;
                 text-align: end;
             }
-            &--time{
+            &--time {
                 font-size: 1.125rem;
                 color: #989898;
             }
-          }
-          &__hints{
+        }
+        &__hints {
             text-align: center;
             font-size: 1.2rem;
             padding: 0.5rem 0 1rem;
             line-height: 2rem;
-          }
-          &__hint{
+        }
+        &__hint {
             color: #323232;
             border-radius: 15px;
             border: 1px solid #fd8b26;
@@ -276,19 +245,19 @@ $fontColor: #323232;
                 background-color: #fd8b26;
                 color: #fff;
             }
-          }
-          &__hint--old {
+        }
+        &__hint--old {
             background-color: #eee;
             border-color: #989898;
             color: #989898;
             pointer-events: none;
-          }
-          &::after {
+        }
+        &::after {
             clear: both;
         }
-        }
+    }
     &__text--robot {
-        border-top:2px solid #fff;
+        border-top: 2px solid #fff;
         .chat-message__text--text {
             text-align: right;
         }
@@ -337,11 +306,10 @@ $fontColor: #323232;
     height: 5rem;
     margin-left: 1rem;
     border: 1px solid transparent;
-    transition: all 0.3s ease;
-    // &:hover {
+    transition: all 0.3s ease; // &:hover {
     //     background: linear-gradient(45deg, #fbc276, #fd8b26);
     // }
-    &[disabled]{
+    &[disabled] {
         background: none;
         border: 1px solid #989898;
         color: #989898;

@@ -1,29 +1,30 @@
 <div class="chatbot-wrapper">
-  <div class="chat">
-
-    <form id='form-user' *ngIf='!afterstart' ngNativeValidate class="chat__modal-login" (submit)="sendName()" (keyup.enter)="onEnter(sendName())">
-      <p class="chat__modal-login__name">
+  <div class="chat-login" *ngIf='!afterstart' >
+    <form id='form-user' ngNativeValidate class="chat__modal-login" (submit)="sendName()" (keyup.enter)="onEnter(sendName())">
+      <p class="chat-login__title">
         Chatbot Amazon
       </p>
-      <p class="chat__modal-login__welcome">
+      <p class="chat-login__subtitle">
         Hello user!
         <br> Give me your name, to let me know how to call you.
       </p>
-      <div class="chat__modal-login__wrapper-input">
-        <label class="visuallyhidden">
-          Write your name
-        </label>
-        <input [(ngModel)]="username" class="user-name" name='username' required placeholder="Write your name">
-        <button class="btn" id="send-name">SEND</button>
+      <div class="chat-login__input">
+        <input [(ngModel)]="username" class="txtarea" name='username' required placeholder="Write your name">
+        <button class="btn">SEND</button>
       </div>
     </form>
-
+  </div>
+  <div class="chat" *ngIf='afterstart'>
     <div class="chat__header">
-        <div class="chat__header--control" (click)="exitChat()"><i class="material-icons">highlight_off</i></div>
-        <div class="chat__header--control" (click)="resetChat()"><i class="material-icons">autorenew</i></div>
+      <div class="chat__header--control" (click)="exitChat()">
+        <i class="material-icons">highlight_off</i>
+      </div>
+      <div class="chat__header--control" (click)="resetChat()">
+        <i class="material-icons">autorenew</i>
+      </div>
     </div>
 
-    <div class="chat__body" *ngIf='afterstart' #chatBody>
+    <div class="chat__body" #chatBody>
       <div class="chat-message" *ngFor="let item of messages">
         <div class="chat-message__avatar" [ngClass]="{'chat-message__avatar--other': item.isHuman}">
         </div>
@@ -33,9 +34,9 @@
             {{item.text}}
           </div>
           <div class="chat-message__text__hints" *ngIf='hintOccurs'>
-              <div *ngFor="let hint of hintList">
-                <button class="chat-message__text__hints--hintbtn" (click)="chooseHint($event)">{{hint}}</button>
-              </div>
+            <div *ngFor="let hint of hintList">
+              <button class="chat-message__text__hints--hintbtn" (click)="chooseHint($event)">{{hint}}</button>
+            </div>
           </div>
           <div class="chat-message__text--published" [ngClass]="{'chat-message__text--published--human': item.isHuman}">
             {{item.isHuman ? item.nameUser : 'Chatbot'}}
@@ -48,7 +49,7 @@
     <div class="chat__footer">
       <form (submit)="sendMessage()" ngNativeValidate (keyup.enter)="onEnter(sendMessage())">
         <textarea #textMessage [disabled]="isSending" name="message" rows="1" required class="txtarea" [(ngModel)]="message" placeholder="Zapytaj mnie o coś..">
-          </textarea>
+        </textarea>
         <button id="btn_send" [disabled]="isSending" type="submit" class="btn">SEND</button>
       </form>
     </div>

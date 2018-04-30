@@ -40,8 +40,45 @@ $fontColor: #323232;
     min-height: 100%;
     display: flex;
     align-items: center;
-    justify-items: center;
+    justify-content: center;
     padding: 5rem 0;
+}
+
+.chat-login {
+    position: relative;
+    background-color: $basebg;
+    text-align: center;
+    font-size: 10px;
+    border-radius: 4px;
+    padding: 0 5rem;
+    width: auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 6px -1px rgba(0,0,0, 0.4);
+    &:after {
+        content: '';
+        clear: both;
+        display: table;
+    }
+    &__title {
+        font-size: 5rem;
+        color: black;
+        text-align: center;
+        margin-top: 4rem;
+       margin-bottom: 0rem;
+    }
+    &__subtitle {    
+        font-size: 1.8rem;
+        color: black;
+        text-align: center;
+        margin-bottom: 6rem;
+    }
+    &__input {
+        margin-bottom: 6rem;
+        display: flex;
+        flex-direction: row;
+    }
 }
 
 .chat {
@@ -53,7 +90,7 @@ $fontColor: #323232;
     border-radius: 4px;
     min-width: 60rem;
     width: 40vw;
-    min-height: 70vh;
+    height: calc(100vh - 10rem);
     max-height: calc(100vh - 10rem);
     display: flex;
     flex-direction: column;
@@ -63,14 +100,6 @@ $fontColor: #323232;
         z-index: -99999999;
     }
     &__modal-login{
-        position: absolute;
-        top:0;
-        left:0;
-        height: 100%;
-        width: 100%;
-        z-index: 9999999999;
-        background-color: $basebg;
-        text-align: center;
         &__name{
             font-size: 5rem;
             color:black;

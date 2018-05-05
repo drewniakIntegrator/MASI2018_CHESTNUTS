@@ -33,4 +33,8 @@ public class ConversationDataService {
         }
         conversationDataRepository.save(conversationData);
     }
+
+    public void save(ConversationData conversationData) {
+        conversationDataRepository.save(conversationData);
+    }
 }

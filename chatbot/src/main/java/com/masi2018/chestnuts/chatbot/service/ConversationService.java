@@ -3,6 +3,7 @@ package com.masi2018.chestnuts.chatbot.service;
 import am.ik.aws.apa.jaxws.ItemSearchRequest;
 import am.ik.aws.apa.jaxws.ItemSearchResponse;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
+import com.masi2018.chestnuts.chatbot.model.BotResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -28,7 +29,7 @@ public class ConversationService {
         this.queryBuilder = queryBuilder;
     }
 
-    public String sendMessage(String message) {
+    public BotResponse sendMessage(String message) {
         MessageResponse watsonResponse = sendToWatson(message);
         ItemSearchResponse amazonResponse = sendToAmazon(watsonResponse);
         return responseService.prepareResponse(watsonResponse, amazonResponse);

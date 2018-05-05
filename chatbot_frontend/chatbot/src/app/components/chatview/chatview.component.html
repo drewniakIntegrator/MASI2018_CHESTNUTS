@@ -34,6 +34,15 @@
         <div class="chat-message__text" [ngClass]="{'chat-message__text--other chat-message__text--robot': item.isHuman}">
           <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': item.isHuman}"></div>
           <div class="chat-message__text--text" [innerHTML]="item.text"></div>
+          <div class="chat-message__items" *ngIf='item.items && item.items.length > 0'>
+            <a [href]="product.url" target="_blank" class="chat-product" *ngFor="let product of item.items">
+              <div class="chat-product__image">
+                <div [style.backgroundImage]="'url(' +  product.image + ')'"></div>
+              </div>
+              <div class="chat-product__name">{{ product.name }}</div>
+
+            </a>
+          </div>
           <div class="chat-message__text__hints" *ngIf='item.hints && item.hints.length > 0'>
             <button *ngFor="let hint of item.hints" [ngClass]="{'chat-message__text__hint--old': !lastItem}" class="chat-message__text__hint"
               (click)="chooseHint(hint)">{{hint}}</button>

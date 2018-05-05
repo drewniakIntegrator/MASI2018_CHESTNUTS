@@ -4,6 +4,9 @@ import { Message } from '../../models/message';
 import { MESSAGESSTATIC } from '../../models/messagesstatic';
 import { ScrollbarComponent } from 'ngx-scrollbar';
 
+declare var jquery: any;   // not required
+declare var $: any;   // not required
+
 @Component({
     selector: 'app-chatview',
     templateUrl: './chatview.component.html',
@@ -27,6 +30,7 @@ export class ChatviewComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
+        this.helpAction();
         this.mockMessageIndex = 0;
         this.dataService.getMessages()
             .subscribe((data) => { this.messages = data; });
@@ -98,12 +102,40 @@ export class ChatviewComponent implements OnInit {
         );
     }
 
+    private helpAction(): void {
+        const CONTAINER_CLASS = '.category-row';
+        const ACTIVE_CLASS = 'isOpen';
+
+        $('body').off('click', '.category-tree a').on('click', '.category-tree a', function () {
+
+            const $parent = $(this).closest(CONTAINER_CLASS);
+            const $activeElements = $parent.children(`.${ACTIVE_CLASS}`);
+            const $this = $(this);
+            const wasActive = $this.hasClass(ACTIVE_CLASS);
+
+            $activeElements.each(function () {
+
+                $(this).removeClass(ACTIVE_CLASS);
+                $(this).next('div').slideUp();
+
+            });
+
+            if (!wasActive) {
+                if ($this.next('div').length > 0) {
+                    $this.addClass(ACTIVE_CLASS);
+                    $this.next('div').slideDown();
+                }
+            }
+
+        });
+    }
+
     private buildHelpTree(tree, isSub = false): string {
-        let html = `<div class="${isSub ? 'category-tree__submenu' : 'category-tree'}">`;
+        let html = `<div class="category-row ${isSub ? 'category-tree__submenu' : 'category-tree'}">`;
 
         tree.forEach(item => {
             let subMenu = '';
-            if (item.sub && item.sub.length > 0){
+            if (item.sub && item.sub.length > 0) {
                 subMenu = this.buildHelpTree(item.sub, true);
             }
 

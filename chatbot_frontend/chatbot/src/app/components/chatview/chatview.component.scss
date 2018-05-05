@@ -323,3 +323,36 @@ $fontColor: #323232;
         background-color: transparent;
     }
 }
+
+
+.category-tree {
+    min-width: 40rem;
+    div {
+        display: none;
+    }
+    .category-row {
+        padding-left: 10px;
+    }
+    a {
+        color: #323232;
+        display: block;
+        border-bottom: 1px solid #fbb462;
+       padding: 0 5px;
+       line-height: 3rem;
+        transition: all 0.6s ease;
+        &:hover {
+            background-color: #fbb462;
+        }
+        &.isOpen {
+            background-color: #fbb462;
+            // & + div {
+            //     display: block;
+            // }
+        }
+    }
+    &__submenu {
+        & > a.isOpen {
+            background-color: #ffd195;
+        }
+    }
+}

@@ -1,9 +1,8 @@
 package com.masi2018.chestnuts.chatbot.service;
 
 import com.ibm.watson.developer_cloud.conversation.v1.Conversation;
-import com.ibm.watson.developer_cloud.conversation.v1.model.InputData;
-import com.ibm.watson.developer_cloud.conversation.v1.model.MessageOptions;
-import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
+import com.ibm.watson.developer_cloud.conversation.v1.model.*;
+import com.masi2018.chestnuts.chatbot.model.BotRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,9 +38,10 @@ public class WatsonConnector {
         conversation.setEndPoint(defaultApiEndpoint);
     }
 
-    public MessageResponse send(String message) {
-        InputData inputData = new InputData.Builder(message).build();
-        MessageOptions messageOptions = new MessageOptions.Builder(workspaceId).input(inputData).build();
+    public MessageResponse send(BotRequest botRequest) {
+        InputData inputData = new InputData.Builder(botRequest.getMessage()).build();
+        MessageOptions messageOptions = new MessageOptions.Builder(workspaceId).context(new Context()).input(inputData).build();
+        messageOptions.context().setConversationId(botRequest.getConversationId());
         return conversation.message(messageOptions).execute();
     }
 }

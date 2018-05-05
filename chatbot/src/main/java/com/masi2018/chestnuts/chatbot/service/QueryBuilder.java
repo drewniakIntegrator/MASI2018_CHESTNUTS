@@ -8,6 +8,12 @@ import org.springframework.stereotype.Service;
 public class QueryBuilder {
 
     public ItemSearchRequest buildQuery(MessageResponse message) {
-        return new ItemSearchRequest();
+        return prepareItemSearchRequest();
+    }
+
+    private ItemSearchRequest prepareItemSearchRequest() {
+        ItemSearchRequest itemSearchRequest = new ItemSearchRequest();
+        itemSearchRequest.setSearchIndex("Movies");
+        return itemSearchRequest;
     }
 }

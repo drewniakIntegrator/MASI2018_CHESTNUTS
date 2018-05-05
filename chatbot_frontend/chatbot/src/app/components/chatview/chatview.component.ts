@@ -20,6 +20,7 @@ export class ChatviewComponent implements OnInit {
 
     nameUser: string;
     isSending: boolean;
+    isHelpSending: boolean;
     message: string;
     messages: Message[] = [];
     mockMessageIndex = 0;
@@ -52,6 +53,10 @@ export class ChatviewComponent implements OnInit {
             this.isSending = true;
             this.messages.push(new Message('', this.message, true));
             this.message = '';
+
+            setTimeout(() => {
+                this.scrollRef.scrollYTo(this.scrollRef.view.scrollHeight, 200);
+            }, 10);
 
             setTimeout(() => {
                 this.isSending = false;
@@ -94,9 +99,12 @@ export class ChatviewComponent implements OnInit {
     }
 
     helpChat() {
+        this.isHelpSending = true;
+        this.messages.push(new Message('', 'CATEGORY_TREE', true));
         this.dataService.getHelp().subscribe(
             (data) => {
                 this.messages.push(new Message('', this.buildHelpTree(data), false));
+                this.isHelpSending = false;
             }
 
         );

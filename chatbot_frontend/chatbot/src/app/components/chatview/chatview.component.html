@@ -22,9 +22,9 @@
       <div class="chat__header--control" (click)="resetChat()">
         <i class="material-icons">autorenew</i>
       </div>
-      <div class="chat__header--control" (click)="helpChat()">
+      <button class="chat__header--control" [disabled]="isHelpSending" (click)="helpChat()">
         <i class="material-icons">help_outline</i>
-      </div>
+      </button>
     </div>
 
     <ng-scrollbar viewClass="fixRight" barClass="scrollFix" class="chat__body" #scrollRef>

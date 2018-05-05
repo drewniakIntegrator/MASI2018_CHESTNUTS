@@ -104,6 +104,9 @@ $fontColor: #323232;
         flex-shrink: 0;
         background-color: #fd8b26;
         &--control {
+            border: none;
+            outline: none;
+            box-shadow: none;
             width: 4rem;
             height: 4rem;
             line-height: 4rem;

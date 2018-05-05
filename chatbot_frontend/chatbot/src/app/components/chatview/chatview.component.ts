@@ -88,4 +88,30 @@ export class ChatviewComponent implements OnInit {
         //window.open(String(location), '_self', '');
         //window.close();
     }
+
+    helpChat() {
+        this.dataService.getHelp().subscribe(
+            (data) => {
+                this.messages.push(new Message('', this.buildHelpTree(data), false));
+            }
+
+        );
+    }
+
+    private buildHelpTree(tree, isSub = false): string {
+        let html = `<div class="${isSub ? 'category-tree__submenu' : 'category-tree'}">`;
+
+        tree.forEach(item => {
+            let subMenu = '';
+            if (item.sub && item.sub.length > 0){
+                subMenu = this.buildHelpTree(item.sub, true);
+            }
+
+            html += `<a role="button">${item.name}</a>${subMenu}`;
+        });
+
+        html += '</div>';
+
+        return html;
+    }
 }

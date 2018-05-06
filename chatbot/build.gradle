@@ -29,4 +29,6 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile 'am.ik.aws:aws-apa:0.9.5'
+	compile 'com.ibm.watson.developer_cloud:java-sdk:5.2.0'
 }

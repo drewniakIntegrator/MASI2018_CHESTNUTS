@@ -3,15 +3,39 @@ import { DataService } from '../../services/data.service';
 import { Message } from '../../models/message';
 import { MESSAGESSTATIC } from '../../models/messagesstatic';
 import { ScrollbarComponent } from 'ngx-scrollbar';
+import { trigger, animate, style, state, transition } from '@angular/animations';
+//import { relative } from 'path';
+import { findLast } from '@angular/compiler/src/directive_resolver';
 
 declare var jquery: any;   // not required
 declare var $: any;   // not required
 
 @Component({
-    selector: 'app-chatview',
-    templateUrl: './chatview.component.html',
-    styleUrls: ['./chatview.component.scss'],
-    encapsulation: ViewEncapsulation.None
+  selector: 'app-chatview',
+  templateUrl: './chatview.component.html',
+  styleUrls: ['./chatview.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger('slideInFromLeft', [
+      transition('void => *', [
+        style({transform: 'translateX(-100%)'}),
+        animate('250ms ease-in')
+      ])
+    ]),
+    trigger('slideInFromRight', [
+      transition('void => *', [
+        style({transform: 'translateX(+100%)'}),
+        animate('250ms ease-in')
+      ])
+    ]),
+    trigger('loader', [
+      state('inactive', style({transform: 'translateY(0%)'})),
+      state('active', style({transform: 'translateY(-20%)'})),
+      transition('* <=> *', [
+        animate(250)
+      ])
+    ])
+  ]
 })
 export class ChatviewComponent implements OnInit {
 
@@ -27,6 +51,8 @@ export class ChatviewComponent implements OnInit {
     username: string;
     afterstart: boolean;
     hintOccurs: boolean;
+    state: string;
+    isEnd: boolean = false;
 
     constructor(private dataService: DataService) { }
 
@@ -91,11 +117,15 @@ export class ChatviewComponent implements OnInit {
         this.username = '';
         this.nameUser = '';
         this.afterstart = false;
+        this.isEnd = false;
     }
 
     exitChat() {
         //window.open(String(location), '_self', '');
         //window.close();
+
+        //Chwilowe rozwiązanie
+        this.isEnd = true;
     }
 
     helpChat() {
@@ -153,5 +183,13 @@ export class ChatviewComponent implements OnInit {
         html += '</div>';
 
         return html;
+    }
+
+    onDone($event) {
+      // call this function at the end of the previous animation.
+      // run it as many time as defined
+      for (var i=0; i<5; i++) {
+        this.state = this.state === 'active' ? 'inactive' : 'active';
+      }
     }
 }

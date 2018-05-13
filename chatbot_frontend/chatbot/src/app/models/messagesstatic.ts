@@ -20,6 +20,6 @@ export const MESSAGESSTATIC: Message[] = [
         ]
     ),
     new Message('', 'Just google bro. I am tired', false),
-    new Message('', 'What did you say?', false),
+    new Message('', 'What did you say?',false)
 ];
 

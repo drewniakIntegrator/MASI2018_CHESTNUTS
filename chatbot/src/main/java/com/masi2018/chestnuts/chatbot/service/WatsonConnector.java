@@ -63,4 +63,12 @@ public class WatsonConnector {
             messageOptions.context().setSystem(conversationData.getSystemResponse());
         }
     }
+
+    public String initConversation() {
+        InputData inputData = new InputData.Builder("").build();
+        MessageOptions messageOptions = new MessageOptions.Builder(workspaceId).context(new Context()).input(inputData).build();
+        MessageResponse messageResponse = conversation.message(messageOptions).execute();
+        conversationDataService.createOrUpdateSystemResponse(messageResponse.getContext().getConversationId(), messageResponse.getContext().getSystem());
+        return messageResponse.getContext().getConversationId();
+    }
 }

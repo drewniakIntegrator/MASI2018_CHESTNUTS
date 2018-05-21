@@ -48,4 +48,8 @@ public class ConversationService {
     public List<String> prepareCategoriesTree() {
         throw new NotImplementedException();
     }
+
+    public String initConversation() {
+        return watsonConnector.initConversation();
+    }
 }

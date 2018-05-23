@@ -6,36 +6,37 @@ import { ScrollbarComponent } from 'ngx-scrollbar';
 import { trigger, animate, style, state, transition } from '@angular/animations';
 //import { relative } from 'path';
 import { findLast } from '@angular/compiler/src/directive_resolver';
+import { ResponseObject } from '../../models/responseObject';
 
 declare var jquery: any;   // not required
 declare var $: any;   // not required
 
 @Component({
-  selector: 'app-chatview',
-  templateUrl: './chatview.component.html',
-  styleUrls: ['./chatview.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: [
-    trigger('slideInFromLeft', [
-      transition('void => *', [
-        style({transform: 'translateX(-100%)'}),
-        animate('250ms ease-in')
-      ])
-    ]),
-    trigger('slideInFromRight', [
-      transition('void => *', [
-        style({transform: 'translateX(+100%)'}),
-        animate('250ms ease-in')
-      ])
-    ]),
-    trigger('loader', [
-      state('inactive', style({transform: 'translateY(0%)'})),
-      state('active', style({transform: 'translateY(-20%)'})),
-      transition('* <=> *', [
-        animate(250)
-      ])
-    ])
-  ]
+    selector: 'app-chatview',
+    templateUrl: './chatview.component.html',
+    styleUrls: ['./chatview.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: [
+        trigger('slideInFromLeft', [
+            transition('void => *', [
+                style({ opacity: '0' }),
+                animate('500ms ease-in', style({ opacity: '1' }))
+            ])
+        ]),
+        trigger('slideInFromRight', [
+            transition('void => *', [
+                style({ opacity: '0' }),
+                animate('500ms ease-in', style({ opacity: '1' }))
+            ])
+        ]),
+        trigger('loader', [
+            state('inactive', style({ transform: 'translateY(0%)' })),
+            state('active', style({ transform: 'translateY(-20%)' })),
+            transition('* <=> *', [
+                animate(250)
+            ])
+        ])
+    ]
 })
 export class ChatviewComponent implements OnInit {
 
@@ -52,70 +53,80 @@ export class ChatviewComponent implements OnInit {
     afterstart: boolean;
     hintOccurs: boolean;
     state: string;
-    isEnd: boolean = false;
+    isEnd: boolean;
 
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
+        this.isEnd = false;
         this.helpAction();
         this.mockMessageIndex = 0;
         this.dataService.getMessages()
             .subscribe((data) => { this.messages = data; });
     }
 
-    sendName() {
+    private addChatbotMessage(text: string) {
+        const newMessage: Message = new Message('', text, false, [], []);
+        this.messages.push(newMessage);
+    }
+
+    private addUserMessage(text: string) {
+        const newMessage: Message = new Message('', text, true, [], []);
+        this.messages.push(newMessage);
+    }
+
+    private scrollChatbot(): void {
+        setTimeout(() => {
+            this.scrollRef.scrollYTo(this.scrollRef.view.scrollHeight, 200);
+        }, 10);
+    }
+
+    private focusTextarea(): void {
+        setTimeout(() => {
+            this.textEl.nativeElement.focus();
+        }, 10);
+    }
+
+    initChat() {
         if (this.username) {
             this.dataService.initConversation().subscribe(
-                (data) => {
-                    console.log(data);
+                (data: ResponseObject) => {
+                    this.dataService.conversationId = data.conversationId;
+                    this.addChatbotMessage(data.message);
                     this.afterstart = true;
-                    setTimeout(() => {
-                        this.textEl.nativeElement.focus();
-                    }, 10);
+                    this.focusTextarea();
                 },
                 (error) => {
 
                 }
             );
-            this.afterstart = true;
-            this.messages.push(MESSAGESSTATIC[this.mockMessageIndex]);
-            setTimeout(() => {
-                this.textEl.nativeElement.focus();
-            }, 10);
         }
-        return;
     }
 
     sendMessage() {
         if (this.message) {
-
+            const messageCopy: string = this.message.replace(/[^a-zA-Z0-9 ]/g, '');
             this.isSending = true;
-            this.messages.push(new Message('', this.message, true));
+
+            this.addUserMessage(this.message);
+
             this.message = '';
 
-            setTimeout(() => {
-                this.scrollRef.scrollYTo(this.scrollRef.view.scrollHeight, 200);
-            }, 10);
+            this.scrollChatbot();
 
-            setTimeout(() => {
-                this.isSending = false;
+            this.dataService.sendMessage(messageCopy).subscribe(
+                (data: ResponseObject) => {
+                    this.isSending = false;
 
-                if (this.mockMessageIndex >= MESSAGESSTATIC.length) {
-                    this.mockMessageIndex = MESSAGESSTATIC.length - 1;
+                    this.addChatbotMessage(data.message);
+
+                    this.scrollChatbot();
+                    this.focusTextarea();
+                },
+                (error) => {
+                    this.isSending = false;
                 }
-
-                this.messages.push(MESSAGESSTATIC[this.mockMessageIndex]);
-
-                setTimeout(() => {
-                    this.scrollRef.scrollYTo(this.scrollRef.view.scrollHeight, 600);
-                }, 10);
-
-                setTimeout(() => {
-                    this.textEl.nativeElement.focus();
-                }, 10);
-            }, 1000);
-
-            this.mockMessageIndex++;
+            );
         }
     }
 
@@ -134,10 +145,6 @@ export class ChatviewComponent implements OnInit {
     }
 
     exitChat() {
-        //window.open(String(location), '_self', '');
-        //window.close();
-
-        //Chwilowe rozwiązanie
         this.isEnd = true;
     }
 
@@ -199,10 +206,8 @@ export class ChatviewComponent implements OnInit {
     }
 
     onDone($event) {
-      // call this function at the end of the previous animation.
-      // run it as many time as defined
-      for (var i=0; i<5; i++) {
-        this.state = this.state === 'active' ? 'inactive' : 'active';
-      }
+        for (let i = 0; i < 5; i++) {
+            this.state = this.state === 'active' ? 'inactive' : 'active';
+        }
     }
 }

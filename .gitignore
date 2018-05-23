@@ -4,3 +4,5 @@ chatbot_frontend/\.vscode/
 chatbot_frontend/\.angulardoc\.json
 
 *.class
+
+chatbot/out/production/resources/

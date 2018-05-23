@@ -5,9 +5,13 @@ import { Message } from '../models/message';
 import { Observable } from 'rxjs';
 import { CATEGORIES_TREE } from '../models/categorytree';
 import { environment } from '../../environments/environment';
+import { ResponseObject } from '../models/responseObject';
+import { RequestObject } from '../models/requestObject';
 
 @Injectable()
 export class DataService {
+
+    conversationId: string;
 
     messages: Message[] = [];
     constructor(private http: HttpClient) {
@@ -28,14 +32,10 @@ export class DataService {
             .get(`${environment.url}/conversations/init`);
     }
 
-    // addHouse(house: House): Observable<any> {
-    //     return this.http
-    //         .post(`${environment.url}/houses`, house)
-    //         .map((response: Response) => response.json())
-    //         .catch((error: Response) => {
-    //             if (error.status >= 400 || error.status === 0) {
-    //                 return Observable.throw(error.json());
-    //             }
-    //         });
-    // }
+    sendMessage(message: string): Observable<any> {
+        const msg: RequestObject = new RequestObject(message, this.conversationId);
+
+        return this.http
+            .post(`${environment.url}/conversations`, msg);
+    }
 }

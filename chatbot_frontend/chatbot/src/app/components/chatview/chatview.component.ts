@@ -65,12 +65,25 @@ export class ChatviewComponent implements OnInit {
 
     sendName() {
         if (this.username) {
+            this.dataService.initConversation().subscribe(
+                (data) => {
+                    console.log(data);
+                    this.afterstart = true;
+                    setTimeout(() => {
+                        this.textEl.nativeElement.focus();
+                    }, 10);
+                },
+                (error) => {
+
+                }
+            );
             this.afterstart = true;
             this.messages.push(MESSAGESSTATIC[this.mockMessageIndex]);
             setTimeout(() => {
                 this.textEl.nativeElement.focus();
             }, 10);
         }
+        return;
     }
 
     sendMessage() {

@@ -49,7 +49,11 @@ public class ConversationService {
         throw new NotImplementedException();
     }
 
-    public String initConversation() {
-        return watsonConnector.initConversation();
+    public BotResponse initConversation() {
+        MessageResponse messageResponse = watsonConnector.initConversation();
+        return BotResponse.builder()
+                .message(messageResponse.getOutput().getText().get(0))
+                .conversationId(messageResponse.getContext().getConversationId())
+                .build();
     }
 }

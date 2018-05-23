@@ -26,7 +26,7 @@ public class ConversationRestController {
     }
 
     @GetMapping(value = "/init")
-    private ResponseEntity<String> initConversation() {
+    private ResponseEntity<BotResponse> initConversation() {
         return ResponseEntity.ok(conversationService.initConversation());
     }
 

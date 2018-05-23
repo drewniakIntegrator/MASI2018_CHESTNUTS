@@ -1,6 +1,7 @@
 <div class="chatbot-wrapper">
+
   <div class="chat-login" *ngIf='!afterstart' @slideInFromLeft>
-    <form id='form-user' ngNativeValidate class="chat__modal-login" (submit)="sendName()" (keyup.enter)="onEnter(sendName())">
+    <form id='form-user' ngNativeValidate class="chat__modal-login" (ngSubmit)="sendName()" (keyup.enter)="onEnter(sendName())">
       <p class="chat-login__title">
         Chatbot Amazon
       </p>
@@ -14,6 +15,7 @@
       </div>
     </form>
   </div>
+
   <div class="chat" *ngIf='afterstart' @slideInFromRight>
     <div class="chat__header">
       <div class="chat__header--control" (click)="exitChat()">

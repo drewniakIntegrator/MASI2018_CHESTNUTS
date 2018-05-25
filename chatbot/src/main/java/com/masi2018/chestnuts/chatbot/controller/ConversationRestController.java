@@ -25,6 +25,11 @@ public class ConversationRestController {
         return ResponseEntity.ok(conversationService.sendMessage(botRequest));
     }
 
+    @GetMapping(value = "/init")
+    private ResponseEntity<BotResponse> initConversation() {
+        return ResponseEntity.ok(conversationService.initConversation());
+    }
+
     @GetMapping(path = "/categories")
     private ResponseEntity<List<String>> getCategoriesTree() {
         return ResponseEntity.ok(conversationService.prepareCategoriesTree());

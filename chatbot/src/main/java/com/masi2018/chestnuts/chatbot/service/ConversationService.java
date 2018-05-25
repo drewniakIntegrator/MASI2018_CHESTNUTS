@@ -48,4 +48,12 @@ public class ConversationService {
     public List<String> prepareCategoriesTree() {
         throw new NotImplementedException();
     }
+
+    public BotResponse initConversation() {
+        MessageResponse messageResponse = watsonConnector.initConversation();
+        return BotResponse.builder()
+                .message(messageResponse.getOutput().getText().get(0))
+                .conversationId(messageResponse.getContext().getConversationId())
+                .build();
+    }
 }

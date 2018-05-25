@@ -3,6 +3,10 @@ import { DataService } from '../../services/data.service';
 import { Message } from '../../models/message';
 import { MESSAGESSTATIC } from '../../models/messagesstatic';
 import { ScrollbarComponent } from 'ngx-scrollbar';
+import { trigger, animate, style, state, transition } from '@angular/animations';
+//import { relative } from 'path';
+import { findLast } from '@angular/compiler/src/directive_resolver';
+import { ResponseObject } from '../../models/responseObject';
 
 declare var jquery: any;   // not required
 declare var $: any;   // not required
@@ -11,7 +15,28 @@ declare var $: any;   // not required
     selector: 'app-chatview',
     templateUrl: './chatview.component.html',
     styleUrls: ['./chatview.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    animations: [
+        trigger('slideInFromLeft', [
+            transition('void => *', [
+                style({ opacity: '0' }),
+                animate('500ms ease-in', style({ opacity: '1' }))
+            ])
+        ]),
+        trigger('slideInFromRight', [
+            transition('void => *', [
+                style({ opacity: '0' }),
+                animate('500ms ease-in', style({ opacity: '1' }))
+            ])
+        ]),
+        trigger('loader', [
+            state('inactive', style({ transform: 'translateY(0%)' })),
+            state('active', style({ transform: 'translateY(-20%)' })),
+            transition('* <=> *', [
+                animate(250)
+            ])
+        ])
+    ]
 })
 export class ChatviewComponent implements OnInit {
 
@@ -27,56 +52,81 @@ export class ChatviewComponent implements OnInit {
     username: string;
     afterstart: boolean;
     hintOccurs: boolean;
+    state: string;
+    isEnd: boolean;
 
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
+        this.isEnd = false;
         this.helpAction();
         this.mockMessageIndex = 0;
         this.dataService.getMessages()
             .subscribe((data) => { this.messages = data; });
     }
 
-    sendName() {
+    private addChatbotMessage(text: string) {
+        const newMessage: Message = new Message('', text, false, [], []);
+        this.messages.push(newMessage);
+    }
+
+    private addUserMessage(text: string) {
+        const newMessage: Message = new Message('', text, true, [], []);
+        this.messages.push(newMessage);
+    }
+
+    private scrollChatbot(): void {
+        setTimeout(() => {
+            this.scrollRef.scrollYTo(this.scrollRef.view.scrollHeight, 200);
+        }, 10);
+    }
+
+    private focusTextarea(): void {
+        setTimeout(() => {
+            this.textEl.nativeElement.focus();
+        }, 10);
+    }
+
+    initChat() {
         if (this.username) {
-            this.afterstart = true;
-            this.messages.push(MESSAGESSTATIC[this.mockMessageIndex]);
-            setTimeout(() => {
-                this.textEl.nativeElement.focus();
-            }, 10);
+            this.dataService.initConversation().subscribe(
+                (data: ResponseObject) => {
+                    this.dataService.conversationId = data.conversationId;
+                    this.addChatbotMessage(data.message);
+                    this.afterstart = true;
+                    this.focusTextarea();
+                },
+                (error) => {
+
+                }
+            );
         }
     }
 
     sendMessage() {
         if (this.message) {
-
+            const messageCopy: string = this.message.replace(/[^a-zA-Z0-9 ]/g, '');
             this.isSending = true;
-            this.messages.push(new Message('', this.message, true));
+
+            this.addUserMessage(this.message);
+
             this.message = '';
 
-            setTimeout(() => {
-                this.scrollRef.scrollYTo(this.scrollRef.view.scrollHeight, 200);
-            }, 10);
+            this.scrollChatbot();
 
-            setTimeout(() => {
-                this.isSending = false;
+            this.dataService.sendMessage(messageCopy).subscribe(
+                (data: ResponseObject) => {
+                    this.isSending = false;
 
-                if (this.mockMessageIndex >= MESSAGESSTATIC.length) {
-                    this.mockMessageIndex = MESSAGESSTATIC.length - 1;
+                    this.addChatbotMessage(data.message);
+
+                    this.scrollChatbot();
+                    this.focusTextarea();
+                },
+                (error) => {
+                    this.isSending = false;
                 }
-
-                this.messages.push(MESSAGESSTATIC[this.mockMessageIndex]);
-
-                setTimeout(() => {
-                    this.scrollRef.scrollYTo(this.scrollRef.view.scrollHeight, 600);
-                }, 10);
-
-                setTimeout(() => {
-                    this.textEl.nativeElement.focus();
-                }, 10);
-            }, 1000);
-
-            this.mockMessageIndex++;
+            );
         }
     }
 
@@ -91,11 +141,11 @@ export class ChatviewComponent implements OnInit {
         this.username = '';
         this.nameUser = '';
         this.afterstart = false;
+        this.isEnd = false;
     }
 
     exitChat() {
-        //window.open(String(location), '_self', '');
-        //window.close();
+        this.isEnd = true;
     }
 
     helpChat() {
@@ -153,5 +203,11 @@ export class ChatviewComponent implements OnInit {
         html += '</div>';
 
         return html;
+    }
+
+    onDone($event) {
+        for (let i = 0; i < 5; i++) {
+            this.state = this.state === 'active' ? 'inactive' : 'active';
+        }
     }
 }

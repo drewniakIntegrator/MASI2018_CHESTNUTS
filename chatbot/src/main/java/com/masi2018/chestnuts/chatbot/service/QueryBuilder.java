@@ -20,28 +20,25 @@ public class QueryBuilder {
 
     private static final String MOVIE_ACTOR_PARAMETER_NAME = "actor";
 
-
     private static final String MOVIE_DIRECTOR_PARAMETER_NAME = "director";
 
-    private static final String MOVIE_AUDIENCE_RATING_PARAMETER_NAME = "movie_audience_rating";
+    private static final String MOVIE_AUDIENCE_RATING_PARAMETER_NAME = "movieRating";
 
-    private static final String MOVIE_AVAILABILITY_PARAMETER_NAME = "movie_avaliability";
+    private static final String MOVIE_AVAILABILITY_PARAMETER_NAME = "movieAvaliability";
 
-    private static final String MOVIE_FORMAT_PARAMETER_NAME = "movie_format";
+    private static final String MOVIE_KEYWORDS_PARAMETER_NAME = "movieKeywords";
 
-    private static final String MOVIE_KEYWORDS_PARAMETER_NAME = "movie_keywords";
-
-    private static final String MOVIE_PUBLISHER_PARAMETER_NAME = "movie_publisher";
+    private static final String MOVIE_PUBLISHER_PARAMETER_NAME = "moviePublisher";
 
     private static final String BOOK_AUTHOR_PARAMETER_NAME = "author";
 
-    private static final String BOOK_AVAILABILITY_PARAMETER_NAME = "book_avaliability";
+    private static final String BOOK_AVAILABILITY_PARAMETER_NAME = "bookAvaliability";
 
-    private static final String BOOK_KEYWORDS_PARAMETER_NAME = "book_keywords";
+    private static final String BOOK_KEYWORDS_PARAMETER_NAME = "bookKeywords";
 
-    private static final String BOOK_PUBLICATION_DATE_PARAMETER_NAME = "book_publication_date";
+    private static final String BOOK_PUBLICATION_DATE_PARAMETER_NAME = "bookPublicationDate";
 
-    private static final String BOOK_PUBLISHER_PARAMETER_NAME = "book_publisher";
+    private static final String BOOK_PUBLISHER_PARAMETER_NAME = "bookPublisher";
 
     private static final String MOVIE_SEARCH_INDEX = "DVD";
 
@@ -183,7 +180,6 @@ public class QueryBuilder {
         parameterNames.add(MOVIE_DIRECTOR_PARAMETER_NAME);
         parameterNames.add(MOVIE_AUDIENCE_RATING_PARAMETER_NAME);
         parameterNames.add(MOVIE_AVAILABILITY_PARAMETER_NAME);
-        parameterNames.add(MOVIE_FORMAT_PARAMETER_NAME);
         parameterNames.add(MOVIE_KEYWORDS_PARAMETER_NAME);
         parameterNames.add(MOVIE_PUBLISHER_PARAMETER_NAME);
         return parameterNames;

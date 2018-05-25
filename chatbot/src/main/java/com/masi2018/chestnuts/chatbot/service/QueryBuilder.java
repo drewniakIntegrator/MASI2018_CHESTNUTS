@@ -1,6 +1,5 @@
 package com.masi2018.chestnuts.chatbot.service;
 
-import am.ik.aws.apa.jaxws.ItemLookupRequest;
 import am.ik.aws.apa.jaxws.ItemSearchRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.Context;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,7 +20,6 @@ public class QueryBuilder {
 
     private static final String MOVIE_ACTOR_PARAMETER_NAME = "actor";
 
-    private static final String BOOK_AUTHOR_PARAMETER_NAME = "author";
 
     private static final String MOVIE_DIRECTOR_PARAMETER_NAME = "director";
 
@@ -33,6 +32,21 @@ public class QueryBuilder {
     private static final String MOVIE_KEYWORDS_PARAMETER_NAME = "movie_keywords";
 
     private static final String MOVIE_PUBLISHER_PARAMETER_NAME = "movie_publisher";
+
+    private static final String BOOK_AUTHOR_PARAMETER_NAME = "author";
+
+    private static final String BOOK_AVAILABILITY_PARAMETER_NAME = "book_avaliability";
+
+    private static final String BOOK_KEYWORDS_PARAMETER_NAME = "book_keywords";
+
+    private static final String BOOK_PUBLICATION_DATE_PARAMETER_NAME = "book_publication_date";
+
+    private static final String BOOK_PUBLISHER_PARAMETER_NAME = "book_publisher";
+
+    private static final String MOVIE_SEARCH_INDEX = "DVD";
+
+    private static final String BOOK_SEARCH_INDEX = "Books";
+
     private final ConversationDataService conversationDataService;
 
     @Autowired
@@ -50,9 +64,9 @@ public class QueryBuilder {
         ConversationData conversationData = getConversationData(conversationId);
         String searchIndex = setSearchIndex(message, conversationData);
         itemSearchRequest.setSearchIndex(searchIndex);
+        conversationData.setSearchIndex(searchIndex);
         Map<String, String> searchParameters = getSearchParametersForConversation(message.getContext(), conversationData);
         setParameters(searchParameters, itemSearchRequest);
-        conversationData.setSearchIndex(searchIndex);
         conversationDataService.save(conversationData);
         setResponseGroups(itemSearchRequest);
         return itemSearchRequest;
@@ -95,34 +109,74 @@ public class QueryBuilder {
 
     private String getSearchIndexBasedOnIntents(List<String> intents) {
         if (intents.contains("watch_movie")) {
-            return "DVD";
+            return MOVIE_SEARCH_INDEX;
         } else if (intents.contains("read_book")) {
-            return "Books";
+            return BOOK_SEARCH_INDEX;
         }
-        return null;
+        return "";
     }
 
     private void setParameters(Map<String, String> searchParameters, ItemSearchRequest itemSearchRequest) {
+        switch (itemSearchRequest.getSearchIndex()) {
+            case MOVIE_SEARCH_INDEX:
+                fillMovieParameters(searchParameters, itemSearchRequest);
+                break;
+            case BOOK_SEARCH_INDEX:
+                fillBookParameters(searchParameters, itemSearchRequest);
+                break;
+        }
+    }
+
+    private void fillMovieParameters(Map<String, String> searchParameters, ItemSearchRequest itemSearchRequest) {
         itemSearchRequest.setActor(searchParameters.getOrDefault(MOVIE_ACTOR_PARAMETER_NAME, null));
         itemSearchRequest.setDirector(searchParameters.getOrDefault(MOVIE_DIRECTOR_PARAMETER_NAME, null));
         itemSearchRequest.setPublisher(searchParameters.getOrDefault(MOVIE_PUBLISHER_PARAMETER_NAME, null));
         itemSearchRequest.setAvailability(searchParameters.getOrDefault(MOVIE_AVAILABILITY_PARAMETER_NAME, null));
         itemSearchRequest.setKeywords(searchParameters.getOrDefault(MOVIE_KEYWORDS_PARAMETER_NAME, null));
-        }
-
-    private Map<String, String> getSearchParametersForConversation(Context context, ConversationData conversationData) {
-        return prepareSearchParameters(context, conversationData.getSearchParameters());
     }
 
-    private Map<String, String> prepareSearchParameters(Context context, Map<String, String> searchParameters) {
-        List<String> parameterNames = prepareParameterNames();
+    private void fillBookParameters(Map<String, String> searchParameters, ItemSearchRequest itemSearchRequest) {
+        itemSearchRequest.setAuthor(searchParameters.getOrDefault(BOOK_AUTHOR_PARAMETER_NAME, null));
+        itemSearchRequest.setAvailability(searchParameters.getOrDefault(BOOK_AVAILABILITY_PARAMETER_NAME, null));
+        itemSearchRequest.setKeywords(searchParameters.getOrDefault(BOOK_KEYWORDS_PARAMETER_NAME, null));
+        itemSearchRequest.setReleaseDate(searchParameters.getOrDefault(BOOK_PUBLICATION_DATE_PARAMETER_NAME, null));
+        itemSearchRequest.setPublisher(searchParameters.getOrDefault(BOOK_PUBLISHER_PARAMETER_NAME, null));
+    }
+
+    private Map<String, String> getSearchParametersForConversation(Context context, ConversationData conversationData) {
+        return prepareSearchParameters(context, conversationData.getSearchParameters(), conversationData.getSearchIndex());
+    }
+
+    private Map<String, String> prepareSearchParameters(Context context, Map<String, String> searchParameters, String searchIndex) {
+        List<String> parameterNames = prepareParameterNames(searchIndex);
         for (String parameterName : parameterNames) {
             checkIfContextContainAndUpdateData(context, searchParameters, parameterName);
         }
         return searchParameters;
     }
 
-    private List<String> prepareParameterNames() {
+    private List<String> prepareParameterNames(String searchIndex) {
+        switch (searchIndex) {
+            case MOVIE_SEARCH_INDEX:
+                return prepareMovieParameterNames();
+            case BOOK_SEARCH_INDEX:
+                return prepareBookParameterName();
+            default:
+                return Collections.emptyList();
+        }
+    }
+
+    private List<String> prepareBookParameterName() {
+        List<String> parameterNames = new ArrayList<>();
+        parameterNames.add(BOOK_AUTHOR_PARAMETER_NAME);
+        parameterNames.add(BOOK_AVAILABILITY_PARAMETER_NAME);
+        parameterNames.add(BOOK_KEYWORDS_PARAMETER_NAME);
+        parameterNames.add(BOOK_PUBLICATION_DATE_PARAMETER_NAME);
+        parameterNames.add(BOOK_PUBLISHER_PARAMETER_NAME);
+        return parameterNames;
+    }
+
+    private List<String> prepareMovieParameterNames() {
         List<String> parameterNames = new ArrayList<>();
         parameterNames.add(MOVIE_ACTOR_PARAMETER_NAME);
         parameterNames.add(BOOK_AUTHOR_PARAMETER_NAME);

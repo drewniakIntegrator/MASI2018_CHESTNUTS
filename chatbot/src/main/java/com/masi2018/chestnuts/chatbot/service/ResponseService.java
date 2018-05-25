@@ -22,10 +22,14 @@ public class ResponseService {
         List<String> hints = getHintsFromWatsonResponse(hintsAsString);
         boolean isFinal = Boolean.valueOf(
                 watsonResponse.getContext().getOrDefault("isFinal", "false").toString());
+        String message = watsonResponse.getOutput().getText().get(0);
+        if (message == null || message.equals("")) {
+            message = "Error occurred";
+        }
         List<Item> items = buildItemList(amazonResponse);
         return BotResponse.builder()
                 .conversationId(watsonResponse.getContext().getConversationId())
-                .message(watsonResponse.getOutput().getText().get(0))
+                .message(message)
                 .url(amazonResponse.getItems().get(0).getMoreSearchResultsUrl())
                 .hints(hints)
                 .items(items)

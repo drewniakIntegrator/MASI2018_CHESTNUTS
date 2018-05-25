@@ -20,6 +20,8 @@ public class ResponseService {
     public BotResponse prepareResponse(MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {
         String hintsAsString = watsonResponse.getContext().getOrDefault("hints", "").toString();
         List<String> hints = getHintsFromWatsonResponse(hintsAsString);
+        boolean isFinal = Boolean.valueOf(
+                watsonResponse.getContext().getOrDefault("isFinal", "false").toString());
         List<Item> items = buildItemList(amazonResponse);
         return BotResponse.builder()
                 .conversationId(watsonResponse.getContext().getConversationId())
@@ -27,6 +29,7 @@ public class ResponseService {
                 .url(amazonResponse.getItems().get(0).getMoreSearchResultsUrl())
                 .hints(hints)
                 .items(items)
+                .isFinal(isFinal)
                 .build();
     }
 

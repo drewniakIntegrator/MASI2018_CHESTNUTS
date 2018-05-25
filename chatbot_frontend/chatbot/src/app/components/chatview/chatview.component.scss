@@ -219,7 +219,9 @@ $fontColor: #323232;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        padding-top: 2rem;
+        border-top: 1px solid #fd8b26;
+        padding-top: 3rem;
+        margin-top: 1rem;
         &-title {
             width: 100%;
             flex-shrink: 0;
@@ -230,6 +232,7 @@ $fontColor: #323232;
             font-weight: bold;
             line-height: 2rem;
             vertical-align: middle;
+            font-size: 1.6rem;
         }
     }
     &__avatar {
@@ -313,6 +316,9 @@ $fontColor: #323232;
             font-size: 1.2rem;
             padding: 0.5rem 0 1rem;
             line-height: 2rem;
+            border-top: 1px solid #fd8b26;
+            padding-top: 3rem;
+            margin-top: 1rem;
         }
         &__hint {
             color: #323232;

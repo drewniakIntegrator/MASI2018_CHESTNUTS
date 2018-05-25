@@ -1,11 +1,7 @@
 package com.masi2018.chestnuts.chatbot.service;
 
 import am.ik.aws.apa.jaxws.ItemSearchResponse;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 import com.masi2018.chestnuts.chatbot.model.BotResponse;
 import lombok.extern.slf4j.Slf4j;

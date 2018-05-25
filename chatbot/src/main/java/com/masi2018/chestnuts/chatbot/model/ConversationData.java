@@ -25,6 +25,8 @@ public class ConversationData {
 
     private String conversationId;
 
+    private String searchIndex;
+
     @Builder.Default
     private Map<String, String> searchParameters = new HashMap<>();
 }

@@ -12,4 +12,6 @@ public class BotResponse {
     private String message;
     private String conversationId;
     private List<String> hints;
+
+    private List<Item> items;
 }

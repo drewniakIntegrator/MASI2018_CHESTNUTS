@@ -4,6 +4,7 @@ import am.ik.aws.apa.jaxws.ItemSearchResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 import com.masi2018.chestnuts.chatbot.model.BotResponse;
+import com.masi2018.chestnuts.chatbot.model.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,28 @@ public class ResponseService {
     public BotResponse prepareResponse(MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {
         String hintsAsString = watsonResponse.getContext().getOrDefault("hints", "").toString();
         List<String> hints = getHintsFromWatsonResponse(hintsAsString);
-
+        List<Item> items = buildItemList(amazonResponse);
         return BotResponse.builder()
                 .conversationId(watsonResponse.getContext().getConversationId())
                 .message(watsonResponse.getOutput().getText().get(0))
                 .url(amazonResponse.getItems().get(0).getMoreSearchResultsUrl())
                 .hints(hints)
+                .items(items)
                 .build();
+    }
+
+    private List<Item> buildItemList(ItemSearchResponse amazonResponse) {
+        List<Item> items = new ArrayList<>();
+        for (am.ik.aws.apa.jaxws.Item amazonItem : amazonResponse.getItems().get(0).getItem()) {
+            Item item = Item
+                    .builder()
+                    .title(amazonItem.getItemAttributes().getTitle())
+                    .url(amazonItem.getDetailPageURL())
+                    .imageUrl(amazonItem.getSmallImage().getURL())
+                    .build();
+            items.add(item);
+        }
+        return items;
     }
 
     private List<String> getHintsFromWatsonResponse(String hintsAsString) {

@@ -1,5 +1,6 @@
 package com.masi2018.chestnuts.chatbot.service;
 
+import am.ik.aws.apa.jaxws.ItemLookupRequest;
 import am.ik.aws.apa.jaxws.ItemSearchRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.Context;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
@@ -8,6 +9,7 @@ import com.masi2018.chestnuts.chatbot.model.ConversationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +54,23 @@ public class QueryBuilder {
         setParameters(searchParameters, itemSearchRequest);
         conversationData.setSearchIndex(searchIndex);
         conversationDataService.save(conversationData);
+        setResponseGroups(itemSearchRequest);
         return itemSearchRequest;
+    }
+
+    private void setResponseGroups(ItemSearchRequest itemSearchRequest) {
+        try {
+            List<String> responseGroup = new ArrayList<>();
+            responseGroup.add("Images");
+            responseGroup.add("ItemAttributes");
+            Class<?> c = itemSearchRequest.getClass();
+            Field responseGroupField = c.getDeclaredField("responseGroup");
+            responseGroupField.setAccessible(true);
+            responseGroupField.set(itemSearchRequest, responseGroup);
+            responseGroupField.setAccessible(false);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     private ConversationData getConversationData(String conversationId) {
@@ -77,7 +95,7 @@ public class QueryBuilder {
 
     private String getSearchIndexBasedOnIntents(List<String> intents) {
         if (intents.contains("watch_movie")) {
-            return "Movies";
+            return "DVD";
         } else if (intents.contains("read_book")) {
             return "Books";
         }

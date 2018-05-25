@@ -27,9 +27,9 @@ export class DataService {
         return Observable.of(CATEGORIES_TREE);
     }
 
-    initConversation(): Observable<any> {
+    initConversation(username: string): Observable<any> {
         return this.http
-            .get(`${environment.url}/conversations/init`);
+            .get(`${environment.url}/conversations/init?username=${username}`);
     }
 
     sendMessage(message: string): Observable<any> {

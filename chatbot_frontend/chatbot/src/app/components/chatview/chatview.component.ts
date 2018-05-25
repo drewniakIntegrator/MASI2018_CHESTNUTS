@@ -43,8 +43,10 @@ export class ChatviewComponent implements OnInit {
     @ViewChild(ScrollbarComponent) scrollRef: ScrollbarComponent;
     @ViewChild('textMessage') textEl: ElementRef;
 
-    nameUser: string;
     isSending: boolean;
+    isUsernameSending: boolean;
+
+    nameUser: string;
     isHelpSending: boolean;
     message: string;
     messages: Message[] = [];
@@ -58,6 +60,7 @@ export class ChatviewComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
+        this.isUsernameSending = false;
         this.isEnd = false;
         this.helpAction();
         this.mockMessageIndex = 0;
@@ -65,8 +68,8 @@ export class ChatviewComponent implements OnInit {
             .subscribe((data) => { this.messages = data; });
     }
 
-    private addChatbotMessage(text: string) {
-        const newMessage: Message = new Message('', text, false, [], []);
+    private addChatbotMessage(response: ResponseObject) {
+        const newMessage: Message = new Message('', response.message, false, response.hints, response.items);
         this.messages.push(newMessage);
     }
 
@@ -89,11 +92,13 @@ export class ChatviewComponent implements OnInit {
 
     initChat() {
         if (this.username) {
-            this.dataService.initConversation().subscribe(
+            this.isUsernameSending = true;
+            this.dataService.initConversation(this.username).subscribe(
                 (data: ResponseObject) => {
                     this.dataService.conversationId = data.conversationId;
-                    this.addChatbotMessage(data.message);
+                    this.addChatbotMessage(data);
                     this.afterstart = true;
+                    this.isUsernameSending = false;
                     this.focusTextarea();
                 },
                 (error) => {
@@ -118,7 +123,7 @@ export class ChatviewComponent implements OnInit {
                 (data: ResponseObject) => {
                     this.isSending = false;
 
-                    this.addChatbotMessage(data.message);
+                    this.addChatbotMessage(data);
 
                     this.scrollChatbot();
                     this.focusTextarea();

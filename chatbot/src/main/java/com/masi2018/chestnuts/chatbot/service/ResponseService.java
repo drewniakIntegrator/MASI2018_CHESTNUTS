@@ -40,7 +40,7 @@ public class ResponseService {
                     .builder()
                     .title(amazonItem.getItemAttributes().getTitle())
                     .url(amazonItem.getDetailPageURL())
-                    .imageUrl(amazonItem.getSmallImage().getURL())
+                    .imageUrl(amazonItem.getLargeImage().getURL())
                     .build();
             items.add(item);
         }

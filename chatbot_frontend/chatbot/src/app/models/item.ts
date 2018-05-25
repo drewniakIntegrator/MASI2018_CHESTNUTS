@@ -1,14 +1,11 @@
 export class Item {
-    id: string;
-    name: string;
-    image: string;
+    title: string;
+    imageUrl: string;
     url: string;
 
-
-    constructor($id: string, $name: string, $image: string, $url: string) {
-        this.id = $id;
-        this.name = $name;
-        this.image = $image;
+    constructor($title: string, $imageUrl: string, $url: string) {
+        this.title = $title;
+        this.imageUrl = $imageUrl;
         this.url = $url;
     }
 

@@ -1,12 +1,10 @@
-import { Message } from "./message";
+import { Item } from "./item";
 
 export class ResponseObject {
     conversationId: string;
     message: string;
     url: string;
-
-    public parseForMessage(): Message {
-        console.log('a');
-        return null;
-    }
+    hints: string[] = [];
+    items: Item[] = [];
+    isFinal: boolean;
 }

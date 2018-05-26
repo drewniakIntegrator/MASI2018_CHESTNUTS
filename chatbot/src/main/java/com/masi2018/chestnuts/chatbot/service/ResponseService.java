@@ -6,6 +6,7 @@ import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 import com.masi2018.chestnuts.chatbot.model.BotResponse;
 import com.masi2018.chestnuts.chatbot.model.Item;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,9 +18,18 @@ import java.util.List;
 @Service
 public class ResponseService {
 
+    private final ConversationSummaryService conversationSummaryService;
+
+    private final LogService logService;
+
+    @Autowired
+    public ResponseService(ConversationSummaryService conversationSummaryService, LogService logService) {
+        this.conversationSummaryService = conversationSummaryService;
+        this.logService = logService;
+    }
+
     public BotResponse prepareResponse(MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {
-        String hintsAsString = watsonResponse.getContext().getOrDefault("hints", "").toString();
-        List<String> hints = getHintsFromWatsonResponse(hintsAsString);
+        List<String> hints = getHintsFromWatsonResponse(watsonResponse);
         boolean isFinal = Boolean.valueOf(
                 watsonResponse.getContext().getOrDefault("isFinal", "false").toString());
         String message = watsonResponse.getOutput().getText().get(0);
@@ -27,6 +37,7 @@ public class ResponseService {
             message = "Error occurred";
         }
         List<Item> items = buildItemList(amazonResponse);
+        saveLogs(watsonResponse, amazonResponse);
         return BotResponse.builder()
                 .conversationId(watsonResponse.getContext().getConversationId())
                 .message(message)
@@ -35,6 +46,11 @@ public class ResponseService {
                 .items(items)
                 .isFinal(isFinal)
                 .build();
+    }
+
+    private void saveLogs(MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {
+        conversationSummaryService.saveConversationSummary(watsonResponse, amazonResponse);
+        logService.saveLogs(watsonResponse);
     }
 
     private List<Item> buildItemList(ItemSearchResponse amazonResponse) {
@@ -51,7 +67,8 @@ public class ResponseService {
         return items;
     }
 
-    private List<String> getHintsFromWatsonResponse(String hintsAsString) {
+    private List<String> getHintsFromWatsonResponse(MessageResponse watsonResponse) {
+        String hintsAsString = watsonResponse.getContext().getOrDefault("hints", "").toString();
         hintsAsString = hintsAsString.replace("'", "\"");
         List<String> hints = new ArrayList<>();
         if (hintsAsString != null && !hintsAsString.equals("")) {

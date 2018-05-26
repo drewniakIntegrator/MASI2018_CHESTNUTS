@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface LogRepository extends MongoRepository<Log, String> {
-    List<Log> findAllByConversationId(String conversationId);
+    List<Log> findAllByConversationIdOrderByTimeAsc(String conversationId);
 }

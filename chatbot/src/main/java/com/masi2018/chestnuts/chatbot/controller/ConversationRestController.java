@@ -33,7 +33,7 @@ public class ConversationRestController {
 
     @GetMapping(value = "/init")
     private ResponseEntity<BotResponse> initConversation(@RequestParam String username) {
-        return ResponseEntity.ok(conversationService.initConversation());
+        return ResponseEntity.ok(conversationService.initConversation(username));
     }
 
     @GetMapping(path = "/categories")

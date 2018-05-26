@@ -8,10 +8,6 @@ import com.masi2018.chestnuts.chatbot.repository.ConversationSummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 @Service
 public class ConversationSummaryService {
 
@@ -28,19 +24,43 @@ public class ConversationSummaryService {
     }
 
     private ConversationSummary prepareConversationSummary(MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {
-        //@TODO  implement
-        return ConversationSummary.builder().build();
+        ConversationSummary conversationSummary = getOrCreateConversationSummary(watsonResponse);
+        fillConversationSummary(conversationSummary, watsonResponse, amazonResponse);
+        return conversationSummary;
+    }
+
+    private void fillConversationSummary(ConversationSummary conversationSummary
+            , MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {
+        boolean isMisunderstand = Boolean.valueOf(watsonResponse.getContext()
+                .getOrDefault("anythingElse", "false").toString());
+        if (isMisunderstand) {
+            conversationSummary.setAmountOfMisunderstoodQuestions(
+                    conversationSummary.getAmountOfMisunderstoodQuestions() + 1);
+        } else {
+            conversationSummary.setAmountOfQuestions(
+                    conversationSummary.getAmountOfQuestions() + 1);
+            conversationSummary.getNumberOfQuestionToAmountOfProducts().put(
+                    conversationSummary.getAmountOfQuestions(), amazonResponse.getItems().get(0).getTotalResults());
+        }
+    }
+
+    private ConversationSummary getOrCreateConversationSummary(MessageResponse watsonResponse) {
+        ConversationSummary conversationSummary = conversationSummaryRepository
+                .findByConversationId(watsonResponse.getContext().getConversationId());
+        if (conversationSummary == null) {
+            conversationSummary = ConversationSummary
+                    .builder()
+                    .conversationId(watsonResponse.getContext().getConversationId())
+                    .build();
+        }
+        return conversationSummary;
     }
 
     public boolean scoreConversation(String conversationId, ScoreRequest scoreRequest) {
-//        ConversationSummary conversationSummary = conversationSummaryRepository.findByConversationId(conversationId);
-//        if(conversationSummary == null) {
-//            return false;
-//        }
-        //temporary for mock
-        //TODO implement, this is only for mocked version
-        ConversationSummary conversationSummary = new ConversationSummary();
-        conversationSummary.setConversationId(conversationId);
+        ConversationSummary conversationSummary = conversationSummaryRepository.findByConversationId(conversationId);
+        if (conversationSummary == null) {
+            return false;
+        }
         conversationSummary.setUsabilityScore(scoreRequest.getUsabilityScore());
         conversationSummary.setEffectivenessScore(scoreRequest.getEffectivenessScore());
         conversationSummaryRepository.save(conversationSummary);
@@ -48,18 +68,15 @@ public class ConversationSummaryService {
     }
 
     public ConversationSummary getReport(String conversationId) {
-        //TODO implement, this is only mocked version
-        ConversationSummary conversationSummary = new ConversationSummary();
-        conversationSummary.setConversationId(conversationId);
-        conversationSummary.setAmountOfMisunderstoodQuestions(2);
-        conversationSummary.setAmountOfQuestions(2);
-        conversationSummary.setUsername("username");
-        Map<Integer, Integer> numberOfQuestionToAmountOfProducts = new HashMap<>();
-        numberOfQuestionToAmountOfProducts.put(1, 25);
-        numberOfQuestionToAmountOfProducts.put(2, 15);
-        numberOfQuestionToAmountOfProducts.put(3, 10);
-        numberOfQuestionToAmountOfProducts.put(4, 3);
-        conversationSummary.setNumberOfQuestionToAmountOfProducts(numberOfQuestionToAmountOfProducts);
-        return conversationSummary;
+        return conversationSummaryRepository.findByConversationId(conversationId);
+    }
+
+    public void createConversationSummary(String username, String conversationId) {
+        ConversationSummary conversationSummary = ConversationSummary
+                .builder()
+                .username(username)
+                .conversationId(conversationId)
+                .build();
+        conversationSummaryRepository.save(conversationSummary);
     }
 }

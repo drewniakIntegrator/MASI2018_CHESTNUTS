@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,5 +26,5 @@ public class ConversationSummary {
     private int usabilityScore;
     private int effectivenessScore;
     @Builder.Default
-    Map<Integer, Integer> numberOfQuestionToAmountOfProducts = new HashMap<>();
+    Map<Integer, BigInteger> numberOfQuestionToAmountOfProducts = new HashMap<>();
 }

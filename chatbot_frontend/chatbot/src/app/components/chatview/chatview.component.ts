@@ -1,15 +1,20 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Message } from '../../models/message';
-import { MESSAGESSTATIC } from '../../models/messagesstatic';
 import { ScrollbarComponent } from 'ngx-scrollbar';
 import { trigger, animate, style, state, transition } from '@angular/animations';
-//import { relative } from 'path';
 import { findLast } from '@angular/compiler/src/directive_resolver';
 import { ResponseObject } from '../../models/responseObject';
 
 declare var jquery: any;   // not required
 declare var $: any;   // not required
+
+export const STEPS_DICTIONARY = {
+    BEFORE_START: 0,
+    AFTER_START: 1,
+    SURVEY: 2,
+    REPORT: 3
+};
 
 @Component({
     selector: 'app-chatview',
@@ -17,13 +22,7 @@ declare var $: any;   // not required
     styleUrls: ['./chatview.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        trigger('slideInFromLeft', [
-            transition('void => *', [
-                style({ opacity: '0' }),
-                animate('500ms ease-in', style({ opacity: '1' }))
-            ])
-        ]),
-        trigger('slideInFromRight', [
+        trigger('opacity', [
             transition('void => *', [
                 style({ opacity: '0' }),
                 animate('500ms ease-in', style({ opacity: '1' }))
@@ -38,30 +37,32 @@ declare var $: any;   // not required
         ])
     ]
 })
+
 export class ChatviewComponent implements OnInit {
 
     @ViewChild(ScrollbarComponent) scrollRef: ScrollbarComponent;
     @ViewChild('textMessage') textEl: ElementRef;
 
+    steps = STEPS_DICTIONARY;
     isSending: boolean;
+    isFinal: boolean;
     isUsernameSending: boolean;
-
-    nameUser: string;
     isHelpSending: boolean;
+
+    currentStep: number;
+
     message: string;
     messages: Message[] = [];
     mockMessageIndex = 0;
     username: string;
-    afterstart: boolean;
     hintOccurs: boolean;
     state: string;
-    isEnd: boolean;
 
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
+        this.currentStep = STEPS_DICTIONARY.BEFORE_START;
         this.isUsernameSending = false;
-        this.isEnd = false;
         this.helpAction();
         this.mockMessageIndex = 0;
         this.dataService.getMessages()
@@ -97,8 +98,8 @@ export class ChatviewComponent implements OnInit {
                 (data: ResponseObject) => {
                     this.dataService.conversationId = data.conversationId;
                     this.addChatbotMessage(data);
-                    this.afterstart = true;
                     this.isUsernameSending = false;
+                    this.currentStep = STEPS_DICTIONARY.AFTER_START;
                     this.focusTextarea();
                 },
                 (error) => {
@@ -106,6 +107,10 @@ export class ChatviewComponent implements OnInit {
                 }
             );
         }
+    }
+
+    afterSurveys($event) {
+        this.currentStep = STEPS_DICTIONARY.REPORT;
     }
 
     sendMessage() {
@@ -122,6 +127,7 @@ export class ChatviewComponent implements OnInit {
             this.dataService.sendMessage(messageCopy).subscribe(
                 (data: ResponseObject) => {
                     this.isSending = false;
+                    this.isFinal = data.isFinal;
 
                     this.addChatbotMessage(data);
 
@@ -140,17 +146,20 @@ export class ChatviewComponent implements OnInit {
         this.sendMessage();
     }
 
-    resetChat() {
+    hardResetChat() {
         this.messages.splice(0, this.messages.length);
         this.mockMessageIndex = 0;
         this.username = '';
-        this.nameUser = '';
-        this.afterstart = false;
-        this.isEnd = false;
+        this.currentStep = STEPS_DICTIONARY.BEFORE_START;
+    }
+
+    resetChat() {
+        this.messages.splice(0, this.messages.length);
+        this.initChat();
     }
 
     exitChat() {
-        this.isEnd = true;
+        this.currentStep = STEPS_DICTIONARY.SURVEY;
     }
 
     helpChat() {

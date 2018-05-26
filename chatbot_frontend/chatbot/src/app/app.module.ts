@@ -10,13 +10,15 @@ import { ScrollbarModule } from 'ngx-scrollbar';
 import { AppComponent } from './app.component';
 import { ChatviewComponent } from './components/chatview/chatview.component';
 import { EndviewComponent } from './components/endview/endview.component';
+import { ReportsComponent } from './components/chatview/reports/reports.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatviewComponent,
-    EndviewComponent
+    EndviewComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,

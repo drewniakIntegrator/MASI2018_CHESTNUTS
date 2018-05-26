@@ -1,6 +1,6 @@
 $basebg:#f2f2f2;
 
-.chat-endview {
+.chat-report {
   position: relative;
   background-color: $basebg;
   text-align: center;
@@ -49,34 +49,17 @@ $basebg:#f2f2f2;
             }
   }
 }
-.chat-stars {
+.chat-report__row {
     border-top: 1px solid #fbb25f;
     padding-top: 1rem;
     font-size: 1.4rem;
-    font-weight: 600;
+    font-weight: 400;
     padding: 1rem 2rem;
 }
-.chat-stars--last {
+.chat-report__row--last {
     border-bottom: 1px solid #fbb25f;
 }
 
-.chat-star {
-    width: 4rem;
-    padding: 0.5rem;
-    cursor: pointer;
-}
-.chat-star--active {
-    path {
-        fill: #fd8b26;
-        stroke: #fd8b26;
-    }
-}
-.chat-star--hover {
-    path {
-        fill: #ffc28d;
-        stroke: #ffc28d;
-    }
-}
 
 .btn--end {
     border-radius: 4px;

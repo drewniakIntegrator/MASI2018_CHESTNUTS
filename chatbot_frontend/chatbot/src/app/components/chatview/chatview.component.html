@@ -10,8 +10,8 @@
         <br> Give me your name, to let me know how to call you.
       </p>
       <div class="chat-login__input">
-        <input [(ngModel)]="username" class="txtarea" name='username' required placeholder="Write your name">
-        <button class="btn">SEND</button>
+        <input [disabled]="isUsernameSending" [(ngModel)]="username" class="txtarea" name='username' required placeholder="Write your name">
+        <button [disabled]="isUsernameSending" class="btn">SEND</button>
       </div>
     </form>
   </div>
@@ -29,43 +29,50 @@
       </button>
     </div>
     <app-endview *ngIf="isEnd" @slideInFromLeft></app-endview>
+
     <ng-container *ngIf="!isEnd">
       <ng-scrollbar viewClass="fixRight" barClass="scrollFix" class="chat__body" #scrollRef>
-       <div class="chat-message" *ngFor="let item of messages; let lastItem = last;">
+
+        <div class="chat-message" *ngFor="let item of messages; let lastItem = last;">
           <div class="chat-message__avatar" [ngClass]="{'chat-message__avatar--other': item.isHuman}"></div>
           <div class="chat-message__text" [ngClass]="{'chat-message__text--other chat-message__text--robot': item.isHuman}">
-           <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': item.isHuman}"></div>
+            <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': item.isHuman}"></div>
             <div class="chat-message__text--text" [innerHTML]="item.text"></div>
-            <div class="chat-message__items" *ngIf='item.items && item.items.length > 0'>
-             <a [href]="product.url" target="_blank" class="chat-product" *ngFor="let product of item.items">
-                <div class="chat-product__image">
-                  <div [style.backgroundImage]="'url(' +  product.image + ')'"></div>
-                </div>
-                <div class="chat-product__name">{{ product.name }}</div>
-              </a>
-            </div>
+
             <div class="chat-message__text__hints" *ngIf='item.hints && item.hints.length > 0'>
+              <div class="chat-message__items-title">I have {{ item.hints.length }} hints for you. You can choose from below</div>
+
               <button *ngFor="let hint of item.hints" [ngClass]="{'chat-message__text__hint--old': !lastItem}" class="chat-message__text__hint"
                 (click)="chooseHint(hint)">{{hint}}</button>
             </div>
+
+            <div class="chat-message__items" *ngIf='item.items && item.items.length > 0'>
+              <div class="chat-message__items-title">I found {{ item.items.length }} products for you. You can choose from below or continue the conversation</div>
+              <a [href]="product.url" target="_blank" class="chat-product" *ngFor="let product of item.items">
+                <div class="chat-product__image">
+                  <div [style.backgroundImage]="'url(' +  product.imageUrl + ')'"></div>
+                </div>
+                <div class="chat-product__name">{{ product.title }}</div>
+              </a>
+            </div>
             <div class="chat-message__text--published" [ngClass]="{'chat-message__text--published--human': item.isHuman}">
-              {{item.isHuman ? nameUser : 'Chatbot'}}
+              {{item.isHuman ? username : 'Chatbot'}}
               <span class="chat-message__text--published--time">{{item.date}}</span>
             </div>
           </div>
         </div>
 
         <div class="chat-message" *ngIf="isSending">
-            <div class="chat-message__avatar" [ngClass]="{'chat-message__avatar--other': false}"></div>
-            <div class="chat-message__text" [ngClass]="{'chat-message__text--other chat-message__text--robot': false}">
-             <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': false}"></div>
-              <div [@loader]="state" (@loader.done)="onDone($event)" class="chat-message__text--text" style="font-size: 1.2em;">...</div>
-              <div class="chat-message__text--published" [ngClass]="{'chat-message__text--published--human': false}">
-                  Chatbot
-                  <span class="chat-message__text--published--time"></span>
-              </div>
+          <div class="chat-message__avatar" [ngClass]="{'chat-message__avatar--other': false}"></div>
+          <div class="chat-message__text" [ngClass]="{'chat-message__text--other chat-message__text--robot': false}">
+            <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': false}"></div>
+            <div [@loader]="state" (@loader.done)="onDone($event)" class="chat-message__text--text" style="font-size: 1.2em;">...</div>
+            <div class="chat-message__text--published" [ngClass]="{'chat-message__text--published--human': false}">
+              Chatbot
+              <span class="chat-message__text--published--time"></span>
             </div>
           </div>
+        </div>
 
       </ng-scrollbar>
       <div class="chat__footer">

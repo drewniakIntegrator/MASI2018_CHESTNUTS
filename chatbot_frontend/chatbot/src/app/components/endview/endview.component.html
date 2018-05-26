@@ -1,21 +1,32 @@
 <div class="chat-endview">
-    <p class="chat-endview__title">
-        Chatbot Amazon
-      </p>
-      <p class="chat-endview__subtitle">
-        <span style="font-size: 1.3em;">Help us to develop our chatbot!</span>
-        <br>Fill one off the surveys below
-      </p>
-    <a href="https://www.google.com/intl/pl/forms/about/">
-      <!-- <i class="material-icons">done</i> -->
-      <div class="chat-endview__description">
-          Sample survey
-      </div>
-    </a>
-    <a href="https://www.google.com/intl/pl/forms/about/">
-     <!-- <i class="material-icons">done</i> -->
-      <div class="chat-endview__description">
-          Sample survey2
-      </div>
-      </a>
+  <p class="chat-endview__title">
+    Chatbot Amazon
+  </p>
+  <p class="chat-endview__subtitle">
+    <span style="font-size: 1.3em;">Help us to develop our chatbot!</span>
+    <br>Rate our chatbot
+  </p>
+
+  <div class="chat-stars">
+    <p>Rate our usability. 1 (worst), 10 (best)</p>
+    <div>
+      <svg [ngClass]="{'chat-star--hover': i <= hover.stars1, 'chat-star--active': i <= active.stars1}" class="chat-star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 51 48" (click)="selectStars1(i)" (mouseenter)="hoverStars1(i)" (mouseleave)="noHoverStars1()" *ngFor="let i of stars">
+        <path fill="none" stroke="#000" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="chat-stars chat-stars--last">
+    <p>Rate your satifaction level with the products proposed. 1 (worst), 10 (best)</p>
+    <div>
+      <svg [ngClass]="{'chat-star--hover': i <= hover.stars2, 'chat-star--active': i <= active.stars2}" class="chat-star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 51 48" (click)="selectStars2(i)" (mouseenter)="hoverStars2(i)" (mouseleave)="noHoverStars2()" *ngFor="let i of stars">
+        <path fill="none" stroke="#000" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z" />
+      </svg>
+    </div>
+  </div>
+
+  <div *ngIf="active.stars1 >=0 && active.stars2 >= 0">
+      <button class="btn btn--end" (click)="send()">Send rates</button>
+  </div>
+
 </div>

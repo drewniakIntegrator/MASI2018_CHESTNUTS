@@ -1,6 +1,6 @@
 <div class="chatbot-wrapper">
 
-  <div class="chat-login" *ngIf='!afterstart' @slideInFromLeft>
+  <div class="chat-login" *ngIf="currentStep === steps.BEFORE_START" @opacity>
     <form id='form-user' ngNativeValidate class="chat__modal-login" (ngSubmit)="initChat()" (keyup.enter)="initChat()">
       <p class="chat-login__title">
         Chatbot Amazon
@@ -16,21 +16,24 @@
     </form>
   </div>
 
-  <div class="chat" *ngIf='afterstart' @slideInFromRight>
+  <div class="chat" *ngIf='currentStep === steps.AFTER_START' @opacity>
     <div class="chat__header">
-      <div class="chat__header--control" (click)="exitChat()">
+      <div class="chat__header--control" (click)="exitChat()" title="Zakończ chatu">
         <i class="material-icons">highlight_off</i>
       </div>
-      <div class="chat__header--control" (click)="resetChat()">
+      <div class="chat__header--control" (click)="resetChat()" title="Rozpocznij od początku">
         <i class="material-icons">autorenew</i>
       </div>
-      <button *ngIf="!isEnd" class="chat__header--control" [disabled]="isHelpSending" (click)="helpChat()">
+      <button *ngIf="!isEnd" class="chat__header--control" title="Wyświetl drzewo obsługiwanych kategorii" [disabled]="isHelpSending"
+        (click)="helpChat()">
         <i class="material-icons">help_outline</i>
       </button>
+      <button class="chat__header--control chat__header--control-left" title="Reset chatu" (click)="hardResetChat()">
+        <i class="material-icons">restore</i>
+      </button>
     </div>
-    <app-endview *ngIf="isEnd" @slideInFromLeft></app-endview>
 
-    <ng-container *ngIf="!isEnd">
+    <ng-container>
       <ng-scrollbar viewClass="fixRight" barClass="scrollFix" class="chat__body" #scrollRef>
 
         <div class="chat-message" *ngFor="let item of messages; let lastItem = last;">
@@ -84,4 +87,8 @@
       </div>
     </ng-container>
   </div>
+
+  <app-endview *ngIf="currentStep === steps.SURVEY" @opacity (done)="afterSurveys($event)"></app-endview>
+
+  <app-reports *ngIf="currentStep === steps.REPORT" @opacity (reset)="hardResetChat()"></app-reports>
 </div>

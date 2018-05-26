@@ -45,6 +45,7 @@ export class ChatviewComponent implements OnInit {
 
     steps = STEPS_DICTIONARY;
     isSending: boolean;
+    isFinal: boolean;
     isUsernameSending: boolean;
     isHelpSending: boolean;
 
@@ -60,7 +61,7 @@ export class ChatviewComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
-        this.currentStep = STEPS_DICTIONARY.SURVEY;
+        this.currentStep = STEPS_DICTIONARY.BEFORE_START;
         this.isUsernameSending = false;
         this.helpAction();
         this.mockMessageIndex = 0;
@@ -126,6 +127,7 @@ export class ChatviewComponent implements OnInit {
             this.dataService.sendMessage(messageCopy).subscribe(
                 (data: ResponseObject) => {
                     this.isSending = false;
+                    this.isFinal = data.isFinal;
 
                     this.addChatbotMessage(data);
 

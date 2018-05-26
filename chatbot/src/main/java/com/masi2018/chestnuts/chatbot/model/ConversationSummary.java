@@ -3,6 +3,7 @@ package com.masi2018.chestnuts.chatbot.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 @Document(collection = "conversationSummary")
 public class ConversationSummary {
     @Id
@@ -23,5 +25,5 @@ public class ConversationSummary {
     private int usabilityScore;
     private int effectivenessScore;
     @Builder.Default
-    Map<String, Integer> numberOfQuestionToAmountOfProducts = new HashMap<>();
+    Map<Integer, Integer> numberOfQuestionToAmountOfProducts = new HashMap<>();
 }

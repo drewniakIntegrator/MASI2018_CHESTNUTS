@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConversationSummaryRepository extends MongoRepository<ConversationSummary, String> {
+
+    ConversationSummary findFirstByConversationId(String conversationId);
+
 }

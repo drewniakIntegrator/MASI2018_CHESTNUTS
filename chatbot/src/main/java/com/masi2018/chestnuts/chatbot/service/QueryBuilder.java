@@ -176,7 +176,6 @@ public class QueryBuilder {
     private List<String> prepareMovieParameterNames() {
         List<String> parameterNames = new ArrayList<>();
         parameterNames.add(MOVIE_ACTOR_PARAMETER_NAME);
-        parameterNames.add(BOOK_AUTHOR_PARAMETER_NAME);
         parameterNames.add(MOVIE_DIRECTOR_PARAMETER_NAME);
         parameterNames.add(MOVIE_AUDIENCE_RATING_PARAMETER_NAME);
         parameterNames.add(MOVIE_AVAILABILITY_PARAMETER_NAME);

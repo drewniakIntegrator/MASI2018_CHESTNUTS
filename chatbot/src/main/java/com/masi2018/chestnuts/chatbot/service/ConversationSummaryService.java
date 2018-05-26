@@ -38,7 +38,7 @@ public class ConversationSummaryService {
 //            return false;
 //        }
         //temporary for mock
-        //TODO
+        //TODO implement, this is only for mocked version
         ConversationSummary conversationSummary = new ConversationSummary();
         conversationSummary.setConversationId(conversationId);
         conversationSummary.setUsabilityScore(scoreRequest.getUsabilityScore());
@@ -48,18 +48,18 @@ public class ConversationSummaryService {
     }
 
     public ConversationSummary getReport(String conversationId) {
-        ConversationSummary conversationSummary = conversationSummaryRepository.findFirstByConversationId(conversationId);
-        if(conversationSummary != null) {
-            conversationSummary.setAmountOfMisunderstoodQuestions(2);
-            conversationSummary.setAmountOfQuestions(2);
-            conversationSummary.setUsername("username");
-            Map<Integer, Integer> numberOfQuestionToAmountOfProducts = new HashMap<>();
-            numberOfQuestionToAmountOfProducts.put(1, 25);
-            numberOfQuestionToAmountOfProducts.put(2, 15);
-            numberOfQuestionToAmountOfProducts.put(3, 10);
-            numberOfQuestionToAmountOfProducts.put(4, 3);
-            conversationSummary.setNumberOfQuestionToAmountOfProducts(numberOfQuestionToAmountOfProducts);
-        }
+        //TODO implement, this is only mocked version
+        ConversationSummary conversationSummary = new ConversationSummary();
+        conversationSummary.setConversationId(conversationId);
+        conversationSummary.setAmountOfMisunderstoodQuestions(2);
+        conversationSummary.setAmountOfQuestions(2);
+        conversationSummary.setUsername("username");
+        Map<Integer, Integer> numberOfQuestionToAmountOfProducts = new HashMap<>();
+        numberOfQuestionToAmountOfProducts.put(1, 25);
+        numberOfQuestionToAmountOfProducts.put(2, 15);
+        numberOfQuestionToAmountOfProducts.put(3, 10);
+        numberOfQuestionToAmountOfProducts.put(4, 3);
+        conversationSummary.setNumberOfQuestionToAmountOfProducts(numberOfQuestionToAmountOfProducts);
         return conversationSummary;
     }
 }

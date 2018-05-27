@@ -32,10 +32,7 @@ public class ResponseService {
         List<String> hints = getHintsFromWatsonResponse(watsonResponse);
         boolean isFinal = Boolean.valueOf(
                 watsonResponse.getContext().getOrDefault("isFinal", "false").toString());
-        String message = watsonResponse.getOutput().getText().get(0);
-        if (message == null || message.equals("")) {
-            message = "Error occurred";
-        }
+        String message = getMessageFromWatsonResponse(watsonResponse);
         List<Item> items = buildItemList(amazonResponse);
         saveLogs(watsonResponse, amazonResponse);
         return BotResponse.builder()
@@ -48,6 +45,20 @@ public class ResponseService {
                 .build();
     }
 
+    private String getMessageFromWatsonResponse(MessageResponse watsonResponse) {
+        List<String> watsonResponses = watsonResponse.getOutput().getText();
+        String message;
+        if(watsonResponses.size() > 0) {
+            message = watsonResponses.get(0);
+            if (message == null || message.equals("")) {
+                message = "Error occurred";
+            }
+        } else {
+            message = "Error occurred";
+        }
+        return message;
+    }
+
     private void saveLogs(MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {
         conversationSummaryService.saveConversationSummary(watsonResponse, amazonResponse);
         logService.saveLogs(watsonResponse);
@@ -56,15 +67,24 @@ public class ResponseService {
     private List<Item> buildItemList(ItemSearchResponse amazonResponse) {
         List<Item> items = new ArrayList<>();
         for (am.ik.aws.apa.jaxws.Item amazonItem : amazonResponse.getItems().get(0).getItem()) {
+            String imageUrl = getImageUrl(amazonItem);
+            getImageUrl(amazonItem);
             Item item = Item
                     .builder()
                     .title(amazonItem.getItemAttributes().getTitle())
                     .url(amazonItem.getDetailPageURL())
-                    .imageUrl(amazonItem.getLargeImage().getURL())
+                    .imageUrl(imageUrl)
                     .build();
             items.add(item);
         }
         return items;
+    }
+
+    private String getImageUrl(am.ik.aws.apa.jaxws.Item amazonItem) {
+        if (amazonItem.getLargeImage() != null) {
+            return amazonItem.getLargeImage().getURL();
+        }
+        return null;
     }
 
     private List<String> getHintsFromWatsonResponse(MessageResponse watsonResponse) {

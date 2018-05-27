@@ -27,7 +27,7 @@
   </div>
 
   <div class="chat-report__row chat-report__row--last">
-    <p>Current Questions’ efficiency index</p>
+    <p>Current Questions’ efficiency index <b *ngIf="productsQEI.length === 0">0%</b></p>
     <ul>
         <li *ngFor="let stat of productsQEI">
             Products before/after ({{ stat.before }}/{{ stat.after }}) QEI: 

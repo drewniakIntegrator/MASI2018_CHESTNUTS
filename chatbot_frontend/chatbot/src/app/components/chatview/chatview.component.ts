@@ -150,11 +150,13 @@ export class ChatviewComponent implements OnInit {
         this.messages.splice(0, this.messages.length);
         this.mockMessageIndex = 0;
         this.username = '';
+        this.isFinal = false;
         this.currentStep = STEPS_DICTIONARY.BEFORE_START;
     }
 
     resetChat() {
         this.messages.splice(0, this.messages.length);
+        this.isFinal = false;
         this.initChat();
     }
 

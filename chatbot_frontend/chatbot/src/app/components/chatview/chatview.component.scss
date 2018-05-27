@@ -219,6 +219,10 @@ $fontColor: #323232;
     &:first-child {
         margin-top: 0;
     }
+
+    .open-url {
+        display: none !important;
+    }
     &__items {
         display: flex;
         flex-direction: row;
@@ -364,6 +368,28 @@ $fontColor: #323232;
         float: right;
     }
 }
+.chat-message--chatbot {
+    .open-url {
+        display: block !important;
+        color: #323232;
+        position: absolute;
+        top: 0.5rem;
+        right: 0;
+        width: 3rem;
+        height: 3rem;
+        line-height: 3rem;
+        text-align: center;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        &:hover {
+            color: #fd8b26;
+        }
+    }
+    .chat-message__text--text {
+        padding-right: 2rem;
+    }
+}
+
 
 .txtarea {
     resize: vertical;

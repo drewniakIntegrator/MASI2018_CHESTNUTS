@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { DataService } from '../../services/data.service';
+import { ScoreRequest } from '../../models/scoreRequest';
 
 
 @Component({
@@ -23,7 +25,7 @@ export class EndviewComponent implements OnInit {
 
     stars: number[] = [];
 
-    constructor() { }
+    constructor(private dataService: DataService) { }
 
     ngOnInit() {
         this.hover.stars1 = -1;
@@ -32,7 +34,18 @@ export class EndviewComponent implements OnInit {
     }
 
     send() {
-        this.done.emit('SEND');
+        const scores: ScoreRequest = new ScoreRequest();
+        scores.usabilityScore = this.active.stars1 + 1;
+        scores.effectivenessScore = this.active.stars2 + 1;
+
+        this.dataService.sendScores(scores).subscribe(
+            (data) => {
+                this.done.emit('SEND');
+            },
+            (error) => {
+
+            }
+        );
     }
 
     hoverStars1(star: number) {

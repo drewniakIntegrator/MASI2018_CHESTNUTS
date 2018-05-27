@@ -7,6 +7,7 @@ import { CATEGORIES_TREE } from '../models/categorytree';
 import { environment } from '../../environments/environment';
 import { ResponseObject } from '../models/responseObject';
 import { RequestObject } from '../models/requestObject';
+import { ScoreRequest } from '../models/scoreRequest';
 
 @Injectable()
 export class DataService {
@@ -37,5 +38,15 @@ export class DataService {
 
         return this.http
             .post(`${environment.url}/conversations`, msg);
+    }
+
+    sendScores(scores: ScoreRequest): Observable<any> {
+        return this.http
+            .post(`${environment.url}/conversations/${this.conversationId}/score`, scores);
+    }
+
+    getReports(): Observable<any> {
+        return this.http
+            .get(`${environment.url}/conversations/${this.conversationId}/report`);
     }
 }

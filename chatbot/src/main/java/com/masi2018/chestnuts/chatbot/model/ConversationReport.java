@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ConversationReport {
     private ConversationSummary conversationSummary;
-    private double avgEffectivenessScore;
-    private double avgUsabilityScore;
+    private AllConversationsStatistics allConversationsStatistics;
 }

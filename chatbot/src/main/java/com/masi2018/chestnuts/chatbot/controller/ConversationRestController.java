@@ -37,11 +37,6 @@ public class ConversationRestController {
         return ResponseEntity.ok(conversationService.initConversation(username, request.getRemoteAddr()));
     }
 
-    @GetMapping(path = "/categories")
-    private ResponseEntity<List<String>> getCategoriesTree() {
-        return ResponseEntity.ok(conversationService.prepareCategoriesTree());
-    }
-
     @PostMapping(path = "/{conversationId}/score")
     private ResponseEntity sendScores(@PathVariable String conversationId, @RequestBody ScoreRequest scoreRequest) {
         if (conversationSummaryService.scoreConversation(conversationId, scoreRequest)) {

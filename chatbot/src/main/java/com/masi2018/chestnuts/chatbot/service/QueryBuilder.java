@@ -24,15 +24,11 @@ public class QueryBuilder {
 
     private static final String MOVIE_AUDIENCE_RATING_PARAMETER_NAME = "movieRating";
 
-    private static final String MOVIE_AVAILABILITY_PARAMETER_NAME = "movieAvaliability";
-
     private static final String MOVIE_KEYWORDS_PARAMETER_NAME = "movieKeywords";
 
     private static final String MOVIE_PUBLISHER_PARAMETER_NAME = "moviePublisher";
 
     private static final String BOOK_AUTHOR_PARAMETER_NAME = "author";
-
-    private static final String BOOK_AVAILABILITY_PARAMETER_NAME = "bookAvaliability";
 
     private static final String BOOK_KEYWORDS_PARAMETER_NAME = "bookKeywords";
 
@@ -114,16 +110,15 @@ public class QueryBuilder {
         itemSearchRequest.setActor(searchParameters.getOrDefault(MOVIE_ACTOR_PARAMETER_NAME, null));
         itemSearchRequest.setDirector(searchParameters.getOrDefault(MOVIE_DIRECTOR_PARAMETER_NAME, null));
         itemSearchRequest.setPublisher(searchParameters.getOrDefault(MOVIE_PUBLISHER_PARAMETER_NAME, null));
-        itemSearchRequest.setAvailability(searchParameters.getOrDefault(MOVIE_AVAILABILITY_PARAMETER_NAME, null));
         itemSearchRequest.getAudienceRating().add(searchParameters.getOrDefault(MOVIE_AUDIENCE_RATING_PARAMETER_NAME, null));
         itemSearchRequest.setKeywords(searchParameters.getOrDefault(MOVIE_KEYWORDS_PARAMETER_NAME, ""));
     }
 
     private void fillBookParameters(Map<String, String> searchParameters, ItemSearchRequest itemSearchRequest) {
         itemSearchRequest.setAuthor(searchParameters.getOrDefault(BOOK_AUTHOR_PARAMETER_NAME, null));
-        itemSearchRequest.setAvailability(searchParameters.getOrDefault(BOOK_AVAILABILITY_PARAMETER_NAME, null));
         itemSearchRequest.setKeywords(searchParameters.getOrDefault(BOOK_KEYWORDS_PARAMETER_NAME, ""));
-        itemSearchRequest.setReleaseDate(searchParameters.getOrDefault(BOOK_PUBLICATION_DATE_PARAMETER_NAME, null));
+        itemSearchRequest.setKeywords(itemSearchRequest.getKeywords() + " "
+                + searchParameters.getOrDefault(BOOK_PUBLICATION_DATE_PARAMETER_NAME, " "));
         itemSearchRequest.setPublisher(searchParameters.getOrDefault(BOOK_PUBLISHER_PARAMETER_NAME, null));
     }
 
@@ -153,7 +148,6 @@ public class QueryBuilder {
     private List<String> prepareBookParameterName() {
         List<String> parameterNames = new ArrayList<>();
         parameterNames.add(BOOK_AUTHOR_PARAMETER_NAME);
-        parameterNames.add(BOOK_AVAILABILITY_PARAMETER_NAME);
         parameterNames.add(BOOK_KEYWORDS_PARAMETER_NAME);
         parameterNames.add(BOOK_PUBLICATION_DATE_PARAMETER_NAME);
         parameterNames.add(BOOK_PUBLISHER_PARAMETER_NAME);
@@ -165,7 +159,6 @@ public class QueryBuilder {
         parameterNames.add(MOVIE_ACTOR_PARAMETER_NAME);
         parameterNames.add(MOVIE_DIRECTOR_PARAMETER_NAME);
         parameterNames.add(MOVIE_AUDIENCE_RATING_PARAMETER_NAME);
-        parameterNames.add(MOVIE_AVAILABILITY_PARAMETER_NAME);
         parameterNames.add(MOVIE_KEYWORDS_PARAMETER_NAME);
         parameterNames.add(MOVIE_PUBLISHER_PARAMETER_NAME);
         return parameterNames;

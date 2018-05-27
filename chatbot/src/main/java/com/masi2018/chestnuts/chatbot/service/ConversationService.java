@@ -48,10 +48,6 @@ public class ConversationService {
         return amazonConnector.send(query);
     }
 
-    public List<String> prepareCategoriesTree() {
-        throw new NotImplementedException();
-    }
-
     public BotResponse initConversation(String username, String userAddress) {
         MessageResponse messageResponse = watsonConnector.initConversation();
         conversationSummaryService.createConversationSummary(

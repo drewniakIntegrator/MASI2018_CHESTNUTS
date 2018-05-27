@@ -54,7 +54,7 @@
               <div class="chat-message__items-title">I found {{ item.items.length }} products for you. You can choose from below or continue the conversation</div>
               <a [href]="product.url" target="_blank" class="chat-product" *ngFor="let product of item.items">
                 <div class="chat-product__image">
-                  <div [style.backgroundImage]="'url(' +  product.imageUrl + ')'"></div>
+                  <div [style.backgroundImage]="'url(' +  (product.imageUrl || '/assets/placeholder.png')  + ')'"></div>
                 </div>
                 <div class="chat-product__name">{{ product.title }}</div>
               </a>

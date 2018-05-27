@@ -20,6 +20,7 @@ public class ConversationSummary {
     @Id
     private String id;
     private String username;
+    private String userAddress;
     private String conversationId;
     private int amountOfQuestions;
     private int amountOfMisunderstoodQuestions;

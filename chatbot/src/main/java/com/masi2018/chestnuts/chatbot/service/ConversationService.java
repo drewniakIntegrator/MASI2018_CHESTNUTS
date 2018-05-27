@@ -52,10 +52,10 @@ public class ConversationService {
         throw new NotImplementedException();
     }
 
-    public BotResponse initConversation(String username) {
+    public BotResponse initConversation(String username, String userAddress) {
         MessageResponse messageResponse = watsonConnector.initConversation();
         conversationSummaryService.createConversationSummary(
-                username, messageResponse.getContext().getConversationId());
+                username, messageResponse.getContext().getConversationId(), userAddress);
         return BotResponse.builder()
                 .message(messageResponse.getOutput().getText().get(0))
                 .conversationId(messageResponse.getContext().getConversationId())

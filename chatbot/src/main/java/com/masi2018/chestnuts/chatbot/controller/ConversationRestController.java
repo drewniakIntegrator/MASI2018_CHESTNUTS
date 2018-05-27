@@ -2,7 +2,7 @@ package com.masi2018.chestnuts.chatbot.controller;
 
 import com.masi2018.chestnuts.chatbot.model.BotRequest;
 import com.masi2018.chestnuts.chatbot.model.BotResponse;
-import com.masi2018.chestnuts.chatbot.model.ConversationSummary;
+import com.masi2018.chestnuts.chatbot.model.ConversationReport;
 import com.masi2018.chestnuts.chatbot.model.ScoreRequest;
 import com.masi2018.chestnuts.chatbot.service.ConversationService;
 import com.masi2018.chestnuts.chatbot.service.ConversationSummaryService;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -32,8 +33,8 @@ public class ConversationRestController {
     }
 
     @GetMapping(value = "/init")
-    private ResponseEntity<BotResponse> initConversation(@RequestParam String username) {
-        return ResponseEntity.ok(conversationService.initConversation(username));
+    private ResponseEntity<BotResponse> initConversation(@RequestParam String username, HttpServletRequest request) {
+        return ResponseEntity.ok(conversationService.initConversation(username, request.getRemoteAddr()));
     }
 
     @GetMapping(path = "/categories")
@@ -51,7 +52,7 @@ public class ConversationRestController {
     }
 
     @GetMapping(path = "/{conversationId}/report")
-    private ResponseEntity<ConversationSummary> getReport(@PathVariable String conversationId) {
+    private ResponseEntity<ConversationReport> getReport(@PathVariable String conversationId) {
         return ResponseEntity.ok(conversationSummaryService.getReport(conversationId));
     }
 }

@@ -2,6 +2,7 @@ package com.masi2018.chestnuts.chatbot.service;
 
 import am.ik.aws.apa.jaxws.ItemSearchResponse;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
+import com.masi2018.chestnuts.chatbot.model.ConversationReport;
 import com.masi2018.chestnuts.chatbot.model.ConversationSummary;
 import com.masi2018.chestnuts.chatbot.model.ScoreRequest;
 import com.masi2018.chestnuts.chatbot.repository.ConversationSummaryRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -71,11 +73,36 @@ public class ConversationSummaryService {
         return true;
     }
 
-    public ConversationSummary getReport(String conversationId) {
-        return conversationSummaryRepository.findByConversationId(conversationId);
+    public ConversationReport getReport(String conversationId) {
+        ConversationReport conversationReport = new ConversationReport();
+        conversationReport.setConversationSummary(conversationSummaryRepository.findByConversationId(conversationId));
+        List<ConversationSummary> conversationSummaries = conversationSummaryRepository.findAll();
+        setUsabilityAndEffectivenessScore(conversationReport, conversationSummaries);
+        return conversationReport;
     }
 
-    public void createConversationSummary(String username, String conversationId) {
+    private void setUsabilityAndEffectivenessScore(ConversationReport conversationReport, List<ConversationSummary> conversationSummaries) {
+        double sumEffectivenessScore = 0;
+        double sumUsabilityScore = 0;
+        int numberOfEffectivenessScore = 0;
+        int numberOfUsabilityScore = 0;
+        for(ConversationSummary conversationSummary: conversationSummaries) {
+            int effectivenessScore =  conversationSummary.getEffectivenessScore();
+            int usabilityScore = conversationSummary.getUsabilityScore();
+            if (effectivenessScore != 0) {
+                sumEffectivenessScore += effectivenessScore;
+                numberOfEffectivenessScore++;
+            }
+            if (usabilityScore != 0) {
+                sumUsabilityScore += usabilityScore;
+                numberOfUsabilityScore++;
+            }
+        }
+        conversationReport.setAvgUsabilityScore(sumUsabilityScore/numberOfUsabilityScore);
+        conversationReport.setAvgEffectivenessScore(sumEffectivenessScore/numberOfEffectivenessScore);
+    }
+
+    public void createConversationSummary(String username, String conversationId, String userAddress) {
         Map<Integer, BigInteger> numberOfQuestionToAmountOfProducts = new HashMap<>();
         int amountOfQuestions = 1;
         numberOfQuestionToAmountOfProducts.put(amountOfQuestions, BigInteger.ZERO);
@@ -85,6 +112,7 @@ public class ConversationSummaryService {
                 .conversationId(conversationId)
                 .numberOfQuestionToAmountOfProducts(numberOfQuestionToAmountOfProducts)
                 .amountOfQuestions(amountOfQuestions)
+                .userAddress(userAddress)
                 .build();
         conversationSummaryRepository.save(conversationSummary);
     }

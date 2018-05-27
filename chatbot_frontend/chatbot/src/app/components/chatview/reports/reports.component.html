@@ -31,7 +31,7 @@
     <ul>
         <li *ngFor="let stat of productsQEI">
             Products before/after ({{ stat.before }}/{{ stat.after }}) QEI: 
-            <b>{{ (((stat.before - stat.after)/stat.before)*100).toFixed(2) }}%</b>
+            <b>{{ (((stat.before - stat.after)/stat.before)*100).toFixed(4) }}%</b>
         </li>
     </ul>
     <p *ngIf="productsQEI && productsQEI.length > 0">

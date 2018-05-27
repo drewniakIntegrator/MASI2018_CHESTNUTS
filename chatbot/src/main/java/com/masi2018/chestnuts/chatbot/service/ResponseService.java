@@ -67,15 +67,24 @@ public class ResponseService {
     private List<Item> buildItemList(ItemSearchResponse amazonResponse) {
         List<Item> items = new ArrayList<>();
         for (am.ik.aws.apa.jaxws.Item amazonItem : amazonResponse.getItems().get(0).getItem()) {
+            String imageUrl = getImageUrl(amazonItem);
+            getImageUrl(amazonItem);
             Item item = Item
                     .builder()
                     .title(amazonItem.getItemAttributes().getTitle())
                     .url(amazonItem.getDetailPageURL())
-                    .imageUrl(amazonItem.getLargeImage().getURL())
+                    .imageUrl(imageUrl)
                     .build();
             items.add(item);
         }
         return items;
+    }
+
+    private String getImageUrl(am.ik.aws.apa.jaxws.Item amazonItem) {
+        if (amazonItem.getLargeImage() != null) {
+            return amazonItem.getLargeImage().getURL();
+        }
+        return null;
     }
 
     private List<String> getHintsFromWatsonResponse(MessageResponse watsonResponse) {

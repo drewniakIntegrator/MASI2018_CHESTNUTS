@@ -8,6 +8,10 @@ import com.masi2018.chestnuts.chatbot.repository.ConversationSummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class ConversationSummaryService {
 
@@ -72,10 +76,15 @@ public class ConversationSummaryService {
     }
 
     public void createConversationSummary(String username, String conversationId) {
+        Map<Integer, BigInteger> numberOfQuestionToAmountOfProducts = new HashMap<>();
+        int amountOfQuestions = 1;
+        numberOfQuestionToAmountOfProducts.put(amountOfQuestions, BigInteger.ZERO);
         ConversationSummary conversationSummary = ConversationSummary
                 .builder()
                 .username(username)
                 .conversationId(conversationId)
+                .numberOfQuestionToAmountOfProducts(numberOfQuestionToAmountOfProducts)
+                .amountOfQuestions(amountOfQuestions)
                 .build();
         conversationSummaryRepository.save(conversationSummary);
     }

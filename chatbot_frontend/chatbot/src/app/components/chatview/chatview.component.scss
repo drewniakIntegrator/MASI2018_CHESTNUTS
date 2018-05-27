@@ -127,6 +127,11 @@ $fontColor: #323232;
                 transition: color 0.6s ease;
             }
         }
+        &--control-left {
+            float: left;
+            border-left: 0;
+            border-right: 1px solid #fcb360;
+        }
     }
     &__footer {
         border-top: 1px solid #989898;
@@ -152,8 +157,8 @@ $fontColor: #323232;
 }
 
 .chat-product {
-    width: 18rem;
-    margin: 0 1rem 2rem;
+    width: 14rem;
+    margin: 0 0.5rem 2rem;
     background-color: #f2f2f2;
     border: 1px solid #323232;
     display: flex;
@@ -173,7 +178,7 @@ $fontColor: #323232;
     }
     &__image {
         flex-shrink: 0;
-        padding-bottom: 133.33%;
+        padding-bottom: 135%;
         width: 100%;
         overflow: hidden;
         position: relative;
@@ -190,7 +195,7 @@ $fontColor: #323232;
         }
     }
     &__name {
-        font-size: 1.6rem;
+        font-size: 1.1rem;
         font-weight: 400;
         line-height: 2rem;
         padding: 1rem 1rem;
@@ -199,6 +204,11 @@ $fontColor: #323232;
         align-items: center;
         color: #323232;
         transition: color 0.6s ease;
+        overflow: hidden;
+        width: 100%;
+        justify-content: center;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
     }
 }
 
@@ -209,25 +219,47 @@ $fontColor: #323232;
     &:first-child {
         margin-top: 0;
     }
+
+    .open-url {
+        display: none !important;
+    }
     &__items {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        padding-top: 2rem;
+        border-top: 1px solid #fd8b26;
+        padding-top: 3rem;
+        margin-top: 1rem;
+        &-title {
+            width: 100%;
+            flex-shrink: 0;
+            margin: 0;
+            padding: 0.5rem 0 1rem;
+            margin-top: -2rem;
+            text-align: center;
+            font-weight: bold;
+            line-height: 2rem;
+            vertical-align: middle;
+            font-size: 1.6rem;
+        }
     }
     &__avatar {
-        background-image: url('robot.jpg');
+        background-image: url('/assets/robot.jpg');
         background-size: cover;
         border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
         float: left;
         width: 5rem;
         height: 5rem;
         margin-top: 0.5rem;
         border: 2px solid #fd8b26;
+        background-color: #fff;
     }
     &__avatar--other {
-        background-image: url('user.jpg');
+        background-image: url('/assets/user.png');
+        background-size: 60%;
         float: right;
         &::after {
             clear: both;
@@ -297,6 +329,9 @@ $fontColor: #323232;
             font-size: 1.2rem;
             padding: 0.5rem 0 1rem;
             line-height: 2rem;
+            border-top: 1px solid #fd8b26;
+            padding-top: 3rem;
+            margin-top: 1rem;
         }
         &__hint {
             color: #323232;
@@ -337,6 +372,28 @@ $fontColor: #323232;
         float: right;
     }
 }
+.chat-message--chatbot {
+    .open-url {
+        display: block !important;
+        color: #323232;
+        position: absolute;
+        top: 0.5rem;
+        right: 0;
+        width: 3rem;
+        height: 3rem;
+        line-height: 3rem;
+        text-align: center;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        &:hover {
+            color: #fd8b26;
+        }
+    }
+    .chat-message__text--text {
+        padding-right: 2rem;
+    }
+}
+
 
 .txtarea {
     resize: vertical;
@@ -415,4 +472,7 @@ $fontColor: #323232;
             background-color: #ffd195;
         }
     }
+}
+.btn--end {
+    border-radius: 4px;
 }

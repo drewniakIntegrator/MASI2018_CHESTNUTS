@@ -1,0 +1,49 @@
+<div class="chat-report">
+  <p class="chat-report__title">
+    Chatbot Amazon
+  </p>
+  <p class="chat-report__subtitle">
+    <span style="font-size: 1.3em;">Check our chatbot statistics</span>
+  </p>
+
+  <div class="chat-report__row">
+    <p>Current conversation length: <b>{{ summary.conversationSummary.amountOfQuestions }} questions</b></p>
+    <p>Average conversation length (ACL): <b>{{ summary.allConversationsStatistics.avgAmountOfQuestions.toFixed(2) }} questions/chat</b></p>
+  </div>
+
+  <div class="chat-report__row">
+        <p>Current Chatbot’s failure index: <b>{{ summary.conversationSummary.amountOfMisunderstoodQuestions }} misunderstandings</b></p>
+        <p>Average Chatbot’s failure index (CFI): <b>{{ summary.allConversationsStatistics.avgAmountOfMisunderstoodQuestions.toFixed(2) }} misunderstandings/chat</b></p>
+  </div>
+
+  <div class="chat-report__row">
+    <p>Current Chatbot’s usability score: <b>{{ summary.conversationSummary.usabilityScore }}/10</b></p>
+    <p>Average Chatbot’s usability score (CUS): <b>{{ summary.allConversationsStatistics.avgUsabilityScore.toFixed(2) }}/10</b></p>
+  </div>
+
+  <div class="chat-report__row">
+    <p>Current Chatbot’s effectiveness score: <b>{{ summary.conversationSummary.effectivenessScore }}/10</b></p>
+    <p>Average Chatbot’s effectiveness score (CES): <b>{{ summary.allConversationsStatistics.avgEffectivenessScore.toFixed(2) }}/10</b></p>
+  </div>
+
+  <div class="chat-report__row chat-report__row--last">
+    <p>Current Questions’ efficiency index <b *ngIf="productsQEI.length === 0">0%</b></p>
+    <ul>
+        <li *ngFor="let stat of productsQEI">
+            Products before/after ({{ stat.before }}/{{ stat.after }}) QEI: 
+            <b>{{ (((stat.before - stat.after)/stat.before)*100).toFixed(4) }}%</b>
+        </li>
+    </ul>
+    <p *ngIf="productsQEI && productsQEI.length > 0">
+        Current final Questions’ efficiency index
+        <br/>
+        Products before/after ({{ productsQEI[0].before }}/{{ productsQEI[productsQEI.length - 1].after }}) QEI: 
+        <b>{{ (((productsQEI[0].before - productsQEI[productsQEI.length - 1].after)/productsQEI[0].before)*100).toFixed(4) }}%</b>
+    </p>
+  </div>
+
+  <div>
+    <button class="btn btn--end" (click)="restart()">Restart chatbot</button>
+  </div>
+
+</div>

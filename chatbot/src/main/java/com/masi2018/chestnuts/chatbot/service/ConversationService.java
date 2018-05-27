@@ -22,12 +22,15 @@ public class ConversationService {
 
     private final QueryBuilder queryBuilder;
 
+    private final ConversationSummaryService conversationSummaryService;
+
     @Autowired
-    public ConversationService(WatsonConnector watsonConnector, AmazonConnector amazonConnector, ResponseService responseService, QueryBuilder queryBuilder) {
+    public ConversationService(WatsonConnector watsonConnector, AmazonConnector amazonConnector, ResponseService responseService, QueryBuilder queryBuilder, ConversationSummaryService conversationSummaryService) {
         this.watsonConnector = watsonConnector;
         this.amazonConnector = amazonConnector;
         this.responseService = responseService;
         this.queryBuilder = queryBuilder;
+        this.conversationSummaryService = conversationSummaryService;
     }
 
     public BotResponse sendMessage(BotRequest botRequest) {
@@ -45,7 +48,13 @@ public class ConversationService {
         return amazonConnector.send(query);
     }
 
-    public List<String> prepareCategoriesTree() {
-        throw new NotImplementedException();
+    public BotResponse initConversation(String username, String userAddress) {
+        MessageResponse messageResponse = watsonConnector.initConversation();
+        conversationSummaryService.createConversationSummary(
+                username, messageResponse.getContext().getConversationId(), userAddress);
+        return BotResponse.builder()
+                .message(messageResponse.getOutput().getText().get(0))
+                .conversationId(messageResponse.getContext().getConversationId())
+                .build();
     }
 }

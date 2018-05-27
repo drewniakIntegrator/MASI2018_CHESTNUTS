@@ -1,6 +1,5 @@
 package com.masi2018.chestnuts.chatbot.model;
 
-import com.ibm.watson.developer_cloud.conversation.v1.model.SystemResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,25 +7,25 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "conversationData")
-public class ConversationData {
-
+@NoArgsConstructor
+@Document(collection = "conversationSummary")
+public class ConversationSummary {
     @Id
     private String id;
-
-    private SystemResponse systemResponse;
-
+    private String username;
+    private String userAddress;
     private String conversationId;
-
-    private String searchIndex;
-
+    private int amountOfQuestions;
+    private int amountOfMisunderstoodQuestions;
+    private int usabilityScore;
+    private int effectivenessScore;
     @Builder.Default
-    private Map<String, String> searchParameters = new HashMap<>();
+    Map<Integer, BigInteger> numberOfQuestionToAmountOfProducts = new HashMap<>();
 }

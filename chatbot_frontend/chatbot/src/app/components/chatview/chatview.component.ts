@@ -70,7 +70,7 @@ export class ChatviewComponent implements OnInit {
     }
 
     private addChatbotMessage(response: ResponseObject) {
-        const newMessage: Message = new Message('', response.message, false, response.hints, response.items);
+        const newMessage: Message = new Message('', response.message, false, response.hints, response.items, response.url);
         this.messages.push(newMessage);
     }
 

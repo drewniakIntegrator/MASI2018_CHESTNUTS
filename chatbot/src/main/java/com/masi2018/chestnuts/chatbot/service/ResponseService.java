@@ -32,10 +32,7 @@ public class ResponseService {
         List<String> hints = getHintsFromWatsonResponse(watsonResponse);
         boolean isFinal = Boolean.valueOf(
                 watsonResponse.getContext().getOrDefault("isFinal", "false").toString());
-        String message = watsonResponse.getOutput().getText().get(0);
-        if (message == null || message.equals("")) {
-            message = "Error occurred";
-        }
+        String message = getMessageFromWatsonResponse(watsonResponse);
         List<Item> items = buildItemList(amazonResponse);
         saveLogs(watsonResponse, amazonResponse);
         return BotResponse.builder()
@@ -46,6 +43,20 @@ public class ResponseService {
                 .items(items)
                 .isFinal(isFinal)
                 .build();
+    }
+
+    private String getMessageFromWatsonResponse(MessageResponse watsonResponse) {
+        List<String> watsonResponses = watsonResponse.getOutput().getText();
+        String message;
+        if(watsonResponses.size() > 0) {
+            message = watsonResponses.get(0);
+            if (message == null || message.equals("")) {
+                message = "Error occurred";
+            }
+        } else {
+            message = "Error occurred";
+        }
+        return message;
     }
 
     private void saveLogs(MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {

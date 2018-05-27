@@ -65,23 +65,9 @@ public class QueryBuilder {
         Map<String, String> searchParameters = getSearchParametersForConversation(message.getContext(), conversationData);
         setParameters(searchParameters, itemSearchRequest);
         conversationDataService.save(conversationData);
-        setResponseGroups(itemSearchRequest);
+        itemSearchRequest.getResponseGroup().add("Images");
+        itemSearchRequest.getResponseGroup().add("ItemAttributes");
         return itemSearchRequest;
-    }
-
-    private void setResponseGroups(ItemSearchRequest itemSearchRequest) {
-        try {
-            List<String> responseGroup = new ArrayList<>();
-            responseGroup.add("Images");
-            responseGroup.add("ItemAttributes");
-            Class<?> c = itemSearchRequest.getClass();
-            Field responseGroupField = c.getDeclaredField("responseGroup");
-            responseGroupField.setAccessible(true);
-            responseGroupField.set(itemSearchRequest, responseGroup);
-            responseGroupField.setAccessible(false);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
     }
 
     private ConversationData getConversationData(String conversationId) {
@@ -129,6 +115,7 @@ public class QueryBuilder {
         itemSearchRequest.setDirector(searchParameters.getOrDefault(MOVIE_DIRECTOR_PARAMETER_NAME, null));
         itemSearchRequest.setPublisher(searchParameters.getOrDefault(MOVIE_PUBLISHER_PARAMETER_NAME, null));
         itemSearchRequest.setAvailability(searchParameters.getOrDefault(MOVIE_AVAILABILITY_PARAMETER_NAME, null));
+        itemSearchRequest.getAudienceRating().add(searchParameters.getOrDefault(MOVIE_AUDIENCE_RATING_PARAMETER_NAME, null));
         itemSearchRequest.setKeywords(searchParameters.getOrDefault(MOVIE_KEYWORDS_PARAMETER_NAME, null));
     }
 

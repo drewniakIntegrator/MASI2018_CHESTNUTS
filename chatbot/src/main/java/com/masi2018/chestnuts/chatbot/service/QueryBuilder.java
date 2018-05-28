@@ -118,7 +118,7 @@ public class QueryBuilder {
         itemSearchRequest.setAuthor(searchParameters.getOrDefault(BOOK_AUTHOR_PARAMETER_NAME, null));
         itemSearchRequest.setKeywords(searchParameters.getOrDefault(BOOK_KEYWORDS_PARAMETER_NAME, ""));
         itemSearchRequest.setKeywords(itemSearchRequest.getKeywords() + " "
-                + searchParameters.getOrDefault(BOOK_PUBLICATION_DATE_PARAMETER_NAME, " "));
+                + searchParameters.getOrDefault(BOOK_PUBLICATION_DATE_PARAMETER_NAME, " ").replace(".0", ""));
         itemSearchRequest.setPublisher(searchParameters.getOrDefault(BOOK_PUBLISHER_PARAMETER_NAME, null));
     }
 

@@ -245,17 +245,21 @@ $fontColor: #323232;
         }
     }
     &__avatar {
-        background-image: url('robot.jpg');
+        background-image: url('/assets/robot.jpg');
         background-size: cover;
         border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
         float: left;
         width: 5rem;
         height: 5rem;
         margin-top: 0.5rem;
         border: 2px solid #fd8b26;
+        background-color: #fff;
     }
     &__avatar--other {
-        background-image: url('user.jpg');
+        background-image: url('/assets/user.png');
+        background-size: 60%;
         float: right;
         &::after {
             clear: both;

@@ -16,6 +16,12 @@ export const STEPS_DICTIONARY = {
     REPORT: 3
 };
 
+export const HELP_MESSAGES = [
+    "help", "category", "categories", "tree",
+    "categories tree", "what i can", "where i am", "help me",
+    "show me categories", "show me what can i do", "i dont know", "wtf",
+];
+
 @Component({
     selector: 'app-chatview',
     templateUrl: './chatview.component.html',
@@ -113,31 +119,47 @@ export class ChatviewComponent implements OnInit {
         this.currentStep = STEPS_DICTIONARY.REPORT;
     }
 
+    private checkHelpMessage(text: string) {
+        const lowerCaseText: string = text.toLowerCase();
+
+        if (HELP_MESSAGES.indexOf(lowerCaseText) > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     sendMessage() {
         if (this.message) {
             const messageCopy: string = this.message.replace(/[^a-zA-Z0-9 ]/g, '');
-            this.isSending = true;
 
-            this.addUserMessage(this.message);
+            if (this.checkHelpMessage(messageCopy)) {
+                this.helpChat(messageCopy);
+                this.message = '';
+            } else {
+                this.isSending = true;
 
-            this.message = '';
+                this.addUserMessage(this.message);
 
-            this.scrollChatbot();
+                this.message = '';
 
-            this.dataService.sendMessage(messageCopy).subscribe(
-                (data: ResponseObject) => {
-                    this.isSending = false;
-                    this.isFinal = data.isFinal;
+                this.scrollChatbot();
 
-                    this.addChatbotMessage(data);
+                this.dataService.sendMessage(messageCopy).subscribe(
+                    (data: ResponseObject) => {
+                        this.isSending = false;
+                        this.isFinal = data.isFinal;
 
-                    this.scrollChatbot();
-                    this.focusTextarea();
-                },
-                (error) => {
-                    this.isSending = false;
-                }
-            );
+                        this.addChatbotMessage(data);
+
+                        this.scrollChatbot();
+                        this.focusTextarea();
+                    },
+                    (error) => {
+                        this.isSending = false;
+                    }
+                );
+            }
         }
     }
 
@@ -150,11 +172,13 @@ export class ChatviewComponent implements OnInit {
         this.messages.splice(0, this.messages.length);
         this.mockMessageIndex = 0;
         this.username = '';
+        this.isFinal = false;
         this.currentStep = STEPS_DICTIONARY.BEFORE_START;
     }
 
     resetChat() {
         this.messages.splice(0, this.messages.length);
+        this.isFinal = false;
         this.initChat();
     }
 
@@ -162,13 +186,14 @@ export class ChatviewComponent implements OnInit {
         this.currentStep = STEPS_DICTIONARY.SURVEY;
     }
 
-    helpChat() {
+    helpChat(helpMessage = 'category tree') {
         this.isHelpSending = true;
-        this.messages.push(new Message('', 'CATEGORY_TREE', true));
+        this.messages.push(new Message('', helpMessage, true));
         this.dataService.getHelp().subscribe(
             (data) => {
                 this.messages.push(new Message('', this.buildHelpTree(data), false));
                 this.isHelpSending = false;
+                this.scrollChatbot();
             }
 
         );

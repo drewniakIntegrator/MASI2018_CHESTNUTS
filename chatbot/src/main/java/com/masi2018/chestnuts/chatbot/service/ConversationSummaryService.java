@@ -76,13 +76,16 @@ public class ConversationSummaryService {
 
     public ConversationReport getReport(String conversationId) {
         ConversationReport conversationReport = new ConversationReport();
-        conversationReport.setConversationSummary(conversationSummaryRepository.findByConversationId(conversationId));
-        List<ConversationSummary> conversationSummaries = conversationSummaryRepository.findAll();
-        conversationReport.setAllConversationsStatistics(prepareAllConversationStatistics(conversationReport, conversationSummaries));
+        ConversationSummary conversationSummary = conversationSummaryRepository.findByConversationId(conversationId);
+        conversationReport.setConversationSummary(conversationSummary);
+        List<ConversationSummary> conversationSummaries = conversationSummaryRepository
+                .findAllByUsernameAndUserAddress(conversationSummary.getUsername()
+                        , conversationSummary.getUserAddress());
+        conversationReport.setAllConversationsStatistics(prepareAllConversationStatisticsForUser(conversationSummaries));
         return conversationReport;
     }
 
-    private AllConversationsStatistics prepareAllConversationStatistics(ConversationReport conversationReport, List<ConversationSummary> conversationSummaries) {
+    private AllConversationsStatistics prepareAllConversationStatisticsForUser(List<ConversationSummary> conversationSummaries) {
         AllConversationsStatistics allConversationsStatistics = new AllConversationsStatistics();
         setUsabilityAndEffectivenessScore(allConversationsStatistics, conversationSummaries);
         return allConversationsStatistics;
@@ -96,8 +99,8 @@ public class ConversationSummaryService {
         int numberOfEffectivenessScore = 0;
         int numberOfUsabilityScore = 0;
         int numberOfConversations = conversationSummaries.size();
-        for(ConversationSummary conversationSummary: conversationSummaries) {
-            int effectivenessScore =  conversationSummary.getEffectivenessScore();
+        for (ConversationSummary conversationSummary : conversationSummaries) {
+            int effectivenessScore = conversationSummary.getEffectivenessScore();
             int usabilityScore = conversationSummary.getUsabilityScore();
             if (effectivenessScore != 0) {
                 sumEffectivenessScore += effectivenessScore;
@@ -110,10 +113,10 @@ public class ConversationSummaryService {
             sumAmountOfQuestions += conversationSummary.getAmountOfQuestions();
             sumAmountOfMissUnderstoodQuestions += conversationSummary.getAmountOfMisunderstoodQuestions();
         }
-        conversationReport.setAvgUsabilityScore(sumUsabilityScore/numberOfUsabilityScore);
-        conversationReport.setAvgEffectivenessScore(sumEffectivenessScore/numberOfEffectivenessScore);
-        conversationReport.setAvgAmountOfQuestions(sumAmountOfQuestions/numberOfConversations);
-        conversationReport.setAvgAmountOfMisunderstoodQuestions(sumAmountOfMissUnderstoodQuestions/numberOfConversations);
+        conversationReport.setAvgUsabilityScore(sumUsabilityScore / numberOfUsabilityScore);
+        conversationReport.setAvgEffectivenessScore(sumEffectivenessScore / numberOfEffectivenessScore);
+        conversationReport.setAvgAmountOfQuestions(sumAmountOfQuestions / numberOfConversations);
+        conversationReport.setAvgAmountOfMisunderstoodQuestions(sumAmountOfMissUnderstoodQuestions / numberOfConversations);
     }
 
     public void createConversationSummary(String username, String conversationId, String userAddress) {

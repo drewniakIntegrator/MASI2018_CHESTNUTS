@@ -1,11 +1,13 @@
 package com.masi2018.chestnuts.chatbot.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
 public class BotRequest {
     private String conversationId;
     private String message;
+
+    BotRequest() {}
 }

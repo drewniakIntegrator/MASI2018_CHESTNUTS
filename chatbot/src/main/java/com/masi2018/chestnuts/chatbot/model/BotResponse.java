@@ -1,11 +1,13 @@
 package com.masi2018.chestnuts.chatbot.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Builder
 @Data
 public class BotResponse {
@@ -20,4 +22,6 @@ public class BotResponse {
     public boolean isFinal() {
         return isFinal;
     }
+
+    BotResponse() {}
 }

@@ -17,4 +17,7 @@ public class Log {
     private String sender;
     private String content;
     private long time;
+
+    Log() {
+    }
 }

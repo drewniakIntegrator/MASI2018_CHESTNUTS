@@ -44,5 +44,9 @@ export class ReportsComponent implements OnInit {
     restart() {
         this.reset.emit('RESET');
     }
+    
+    refresh() {
+        this.reset.emit('REFRESH');
+    }
 
 }

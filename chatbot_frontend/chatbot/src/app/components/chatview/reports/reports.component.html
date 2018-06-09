@@ -41,9 +41,10 @@
         <b>{{ (((productsQEI[0].before - productsQEI[productsQEI.length - 1].after)/productsQEI[0].before)*100).toFixed(4) }}%</b>
     </p>
   </div>
-
+  
   <div>
     <button class="btn btn--end" (click)="restart()">Restart chatbot</button>
+    <button class="btn btn--end" (click)="refresh()">Refresh page</button>
   </div>
 
 </div>

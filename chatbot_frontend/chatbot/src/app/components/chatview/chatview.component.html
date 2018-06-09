@@ -18,17 +18,17 @@
 
   <div class="chat" *ngIf='currentStep === steps.AFTER_START' @opacity>
     <div class="chat__header">
-      <div class="chat__header--control" (click)="exitChat()" title="Zakończ chatu">
-        <i class="material-icons">highlight_off</i>
+      <div class="chat__header--control chat__header--control-finish" (click)="exitChat()" title="Finish chat">
+        Finish chat
       </div>
-      <div class="chat__header--control" (click)="resetChat()" title="Rozpocznij od początku">
+      <div class="chat__header--control" (click)="resetChat()" title="Reset your conversation">
         <i class="material-icons">autorenew</i>
       </div>
-      <button *ngIf="!isEnd" class="chat__header--control" title="Wyświetl drzewo obsługiwanych kategorii" [disabled]="isHelpSending"
+      <button *ngIf="!isEnd" class="chat__header--control" title="Help me" [disabled]="isHelpSending"
         (click)="helpChat()">
         <i class="material-icons">help_outline</i>
       </button>
-      <button class="chat__header--control chat__header--control-left" title="Reset chatu" (click)="hardResetChat()">
+      <button class="chat__header--control chat__header--control-left" title="Refresh page" (click)="hardResetChat()">
         <i class="material-icons">restore</i>
       </button>
     </div>
@@ -36,7 +36,7 @@
     <ng-container>
       <ng-scrollbar viewClass="fixRight" barClass="scrollFix" class="chat__body" #scrollRef>
 
-        <div class="chat-message" [ngClass]="{'chat-message--chatbot': !item.isHuman}" *ngFor="let item of messages; let lastItem = last;">
+        <div class="chat-message" [ngClass]="{'chat-message--chatbot': !item.isHuman, 'jsLast': lastItem}" *ngFor="let item of messages; let lastItem = last;">
           <div class="chat-message__avatar" [ngClass]="{'chat-message__avatar--other': item.isHuman}"></div>
           <div class="chat-message__text" [ngClass]="{'chat-message__text--other chat-message__text--robot': item.isHuman}">
             <a class="material-icons open-url" target="_blank" title="Otwórz wyniki w amazon.com" *ngIf="item.url" [href]="item.url">open_in_new</a>
@@ -102,5 +102,5 @@
 
   <app-endview *ngIf="currentStep === steps.SURVEY" @opacity (done)="afterSurveys($event)"></app-endview>
 
-  <app-reports *ngIf="currentStep === steps.REPORT" @opacity (reset)="hardResetChat()"></app-reports>
+  <app-reports *ngIf="currentStep === steps.REPORT" @opacity (reset)="afterReports($event)"></app-reports>
 </div>

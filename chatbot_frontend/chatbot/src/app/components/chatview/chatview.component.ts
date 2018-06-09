@@ -87,7 +87,8 @@ export class ChatviewComponent implements OnInit {
 
     private scrollChatbot(): void {
         setTimeout(() => {
-            this.scrollRef.scrollYTo(this.scrollRef.view.scrollHeight, 200);
+            const lastMessage = <HTMLElement>this.scrollRef.view.querySelector('.jsLast');
+            this.scrollRef.scrollYTo(lastMessage.offsetTop, 200);
         }, 10);
     }
 
@@ -102,7 +103,7 @@ export class ChatviewComponent implements OnInit {
             this.isUsernameSending = true;
             this.dataService.initConversation(this.username).subscribe(
                 (data: ResponseObject) => {
-                    data.message += '<br/><br/> If you want help, please write <b>"help"</b>';
+                    data.message += '<br/><br/> If you want help, please write <b class="help">help</b>';
                     this.dataService.conversationId = data.conversationId;
                     this.addChatbotMessage(data);
                     this.isUsernameSending = false;
@@ -118,6 +119,14 @@ export class ChatviewComponent implements OnInit {
 
     afterSurveys($event) {
         this.currentStep = STEPS_DICTIONARY.REPORT;
+    }
+
+    afterReports($event: String) {
+        if ($event === 'RESET') {
+            this.resetChat();
+        } else {
+            this.hardResetChat();
+        }
     }
 
     private checkHelpMessage(text: string) {

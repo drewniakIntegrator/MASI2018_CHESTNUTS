@@ -19,7 +19,7 @@ export const STEPS_DICTIONARY = {
 export const HELP_MESSAGES = [
     "help", "category", "categories", "tree",
     "categories tree", "what i can", "where i am", "help me",
-    "show me categories", "show me what can i do", "i dont know", "wtf",
+    "show me categories", "show me what can i do", "i dont know", "can i do"
 ];
 
 @Component({
@@ -102,6 +102,7 @@ export class ChatviewComponent implements OnInit {
             this.isUsernameSending = true;
             this.dataService.initConversation(this.username).subscribe(
                 (data: ResponseObject) => {
+                    data.message += '<br/><br/> If you want help, please write <b>"help"</b>';
                     this.dataService.conversationId = data.conversationId;
                     this.addChatbotMessage(data);
                     this.isUsernameSending = false;
@@ -121,12 +122,15 @@ export class ChatviewComponent implements OnInit {
 
     private checkHelpMessage(text: string) {
         const lowerCaseText: string = text.toLowerCase();
+        let isHelpRequest = false;
 
-        if (HELP_MESSAGES.indexOf(lowerCaseText) > -1) {
-            return true;
-        } else {
-            return false;
-        }
+        HELP_MESSAGES.forEach((item) => {
+            if (lowerCaseText.indexOf(item) > -1) {
+                isHelpRequest = true;
+            }
+        });
+
+        return isHelpRequest;
     }
 
     sendMessage() {

@@ -497,6 +497,11 @@ $fontColor: #323232;
 .btn--end {
     border-radius: 4px;
 }
+.btn--close {
+    border-radius: 4px;
+    height: 3rem;
+    padding: 0.4rem 2rem;
+}
 
 @media screen and (max-width: 1700px){
     .chat {

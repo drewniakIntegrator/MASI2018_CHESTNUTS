@@ -41,9 +41,10 @@
           <div class="chat-message__text" [ngClass]="{'chat-message__text--other chat-message__text--robot': item.isHuman}">
             <a class="material-icons open-url" target="_blank" title="Otwórz wyniki w amazon.com" *ngIf="item.url" [href]="item.url">open_in_new</a>
             <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': item.isHuman}"></div>
-            <div class="chat-message__text--text" [innerHTML]="item.text"></div>
+            <div class="chat-message__text--text" *ngIf="!isFinal" [innerHTML]="item.text"></div>
+            <div class="chat-message__text--text" *ngIf="isFinal">This is the end of our conversation. Thank you for use our chatbot.</div>
 
-            <div class="chat-message__text__hints" *ngIf='item.hints && item.hints.length > 0'>
+            <div class="chat-message__text__hints" *ngIf='item.hints && item.hints.length > 0 && !isFinal'>
               <div class="chat-message__items-title">I have {{ item.hints.length }} hints for you. You can choose from below</div>
 
               <button *ngFor="let hint of item.hints" [ngClass]="{'chat-message__text__hint--old': !lastItem}" class="chat-message__text__hint"
@@ -65,7 +66,7 @@
                 <div class="chat-message__items-title">I don't found products for you. You can choose from above propositions</div>
               </div>
               <div>
-                <button class="btn btn--end" (click)="exitChat()">Close chat</button>
+                <button class="btn btn--close" (click)="exitChat()">Close chat</button>
               </div>
             </div>
 

@@ -34,6 +34,9 @@ public class ResponseService {
                 watsonResponse.getContext().getOrDefault("isFinal", "false").toString());
         String message = getMessageFromWatsonResponse(watsonResponse);
         List<Item> items = buildItemList(amazonResponse);
+        if (items != null && items.size() == 0) {
+            isFinal = true;
+        }
         saveLogs(watsonResponse, amazonResponse);
         return BotResponse.builder()
                 .conversationId(watsonResponse.getContext().getConversationId())

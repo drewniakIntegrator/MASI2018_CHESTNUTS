@@ -4,6 +4,7 @@ import am.ik.aws.apa.jaxws.ItemSearchResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 import com.masi2018.chestnuts.chatbot.model.BotResponse;
+import com.masi2018.chestnuts.chatbot.model.ConversationData;
 import com.masi2018.chestnuts.chatbot.model.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,13 @@ public class ResponseService {
 
     private final LogService logService;
 
+    private final ConversationDataService conversationDataService;
+
     @Autowired
-    public ResponseService(ConversationSummaryService conversationSummaryService, LogService logService) {
+    public ResponseService(ConversationSummaryService conversationSummaryService, LogService logService, ConversationDataService conversationDataService) {
         this.conversationSummaryService = conversationSummaryService;
         this.logService = logService;
+        this.conversationDataService = conversationDataService;
     }
 
     public BotResponse prepareResponse(MessageResponse watsonResponse, ItemSearchResponse amazonResponse) {
@@ -35,7 +39,7 @@ public class ResponseService {
         String message = getMessageFromWatsonResponse(watsonResponse);
         List<Item> items = buildItemList(amazonResponse);
         if (items != null && items.size() == 0) {
-            isFinal = true;
+            isFinal = checkIfThereWasAnyGoodAnswer(watsonResponse.getContext().getConversationId());
         }
         saveLogs(watsonResponse, amazonResponse);
         return BotResponse.builder()
@@ -46,6 +50,11 @@ public class ResponseService {
                 .items(items)
                 .isFinal(isFinal)
                 .build();
+    }
+
+    private boolean checkIfThereWasAnyGoodAnswer(String conversationId) {
+        ConversationData conversationData = conversationDataService.findByConversationId(conversationId);
+        return conversationData.getSearchParameters().size() >= 2;
     }
 
     private String getMessageFromWatsonResponse(MessageResponse watsonResponse) {

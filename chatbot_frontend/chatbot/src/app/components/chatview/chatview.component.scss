@@ -503,6 +503,12 @@ $fontColor: #323232;
     padding: 0.4rem 2rem;
 }
 
+.jsLast.jsFinal {
+    .chat-message__text__hints {
+        display: none !important;
+    }
+}
+
 @media screen and (max-width: 1700px){
     .chat {
         width: 55vw;

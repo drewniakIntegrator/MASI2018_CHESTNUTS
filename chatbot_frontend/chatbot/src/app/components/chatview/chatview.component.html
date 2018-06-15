@@ -36,18 +36,18 @@
     <ng-container>
       <ng-scrollbar viewClass="fixRight" barClass="scrollFix" class="chat__body" #scrollRef>
 
-        <div class="chat-message" [ngClass]="{'chat-message--chatbot': !item.isHuman, 'jsLast': lastItem}" *ngFor="let item of messages; let lastItem = last;">
+        <div class="chat-message" [ngClass]="{'chat-message--chatbot': !item.isHuman, 'jsLast': lastItem, 'jsFinal': isFinal}" *ngFor="let item of messages; let lastItem = last;">
           <div class="chat-message__avatar" [ngClass]="{'chat-message__avatar--other': item.isHuman}"></div>
           <div class="chat-message__text" [ngClass]="{'chat-message__text--other chat-message__text--robot': item.isHuman}">
             <a class="material-icons open-url" target="_blank" title="Otwórz wyniki w amazon.com" *ngIf="item.url" [href]="item.url">open_in_new</a>
             <div class="chat-message__text--pointer" [ngClass]="{'chat-message__text--other--pointer': item.isHuman}"></div>
-            <div class="chat-message__text--text" *ngIf="!isFinal" [innerHTML]="item.text"></div>
-            <div class="chat-message__text--text" *ngIf="isFinal">This is the end of our conversation. Thank you for use our chatbot.</div>
+            <div class="chat-message__text--text" *ngIf="!(lastItem && isFinal)" [innerHTML]="item.text"></div>
+            <div class="chat-message__text--text" *ngIf="lastItem && isFinal">This is the end of our conversation. Thank you for use our chatbot.</div>
 
-            <div class="chat-message__text__hints" *ngIf='item.hints && item.hints.length > 0 && !isFinal'>
-              <div class="chat-message__items-title">I have {{ item.hints.length }} hints for you. You can choose from below</div>
+            <div class="chat-message__text__hints" *ngIf='item.hints && item.hints.length > 0'>
+                <div class="chat-message__items-title">The most frequently chosen items in this category are below. You can choose from below elements.</div>
 
-              <button *ngFor="let hint of item.hints" [ngClass]="{'chat-message__text__hint--old': !lastItem}" class="chat-message__text__hint"
+                <button *ngFor="let hint of item.hints" [ngClass]="{'chat-message__text__hint--old': !lastItem}" class="chat-message__text__hint"
                 (click)="chooseHint(hint)">{{hint}}</button>
             </div>
 
@@ -92,7 +92,7 @@
       </ng-scrollbar>
       <div class="chat__footer">
         <form (submit)="sendMessage()" ngNativeValidate (keyup.enter)="sendMessage()">
-          <textarea #textMessage [disabled]="isSending || isFinal" name="message" rows="1" required class="txtarea" [(ngModel)]="message"
+          <textarea #textMessage [disabled]="isSending || isFinal" name="message" rows="1" maxlength="100" required class="txtarea" [(ngModel)]="message"
             placeholder="Write something..">
           </textarea>
           <button id="btn_send" [disabled]="isSending || isFinal" type="submit" class="btn">SEND</button>
